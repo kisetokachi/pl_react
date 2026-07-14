@@ -4,13 +4,17 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // 作成したページコンポーネントをインポート
 import Home from './pages/Home';
 import SeatMatchingApp from './pages/SeatMatchingApp';
+import { LoginForm } from './LoginForm'; // ログイン画面をインポート
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* http://localhost:3000/ のときに表示するページ */}
-        <Route path="/" element={<Home />} />
+        {/* 【変更】一番最初のページ (http://localhost:3000/) をログイン画面にする */}
+        <Route path="/" element={<LoginForm />} />
+
+        {/* 【追加】ログイン後に遷移するホーム画面のパスを作る */}
+        <Route path="/home" element={<Home />} />
 
         {/* http://localhost:3000/match のときに表示するページ */}
         <Route path="/match" element={<SeatMatchingApp />} />
@@ -22,4 +26,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

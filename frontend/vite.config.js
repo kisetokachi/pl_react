@@ -5,10 +5,14 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: '0.0.0.0', // 外部（コンテナ外）からのアクセスを許可
-    port: 3000,      // docker-compose.yamlで指定したポートに合わせる
-    watch: {
-      usePolling: true, // コンテナ内でのファイルの変更検知（ホットリロード）を確実にする
-    },
-  },
+    port: 3000, // 起動ポートを3000に固定
+    proxy: {
+      // フロントエンドからの「/api」で始まる通信を、裏でSpring Boot（8080）に転送する
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
+  }
 })
