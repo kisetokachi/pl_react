@@ -6,7 +6,7 @@ export default function Home() {
 	const navigate = useNavigate()
 
    return (
-     <div style={{ padding: '200px', textAlign: 'center', fontFamily: 'sans-serif' }}>
+     <div style={{ padding: '130px', textAlign: 'center', fontFamily: 'sans-serif' }}>
        <h1>座席マッチングシステムへようこそ</h1>
        <p style={{ padding: '20px' }}>アプリを使用するには以下をクリックしてください</p>
        <button onClick={() => navigate('/match')}
