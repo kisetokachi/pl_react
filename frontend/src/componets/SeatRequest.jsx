@@ -1,4 +1,5 @@
 import SchoolSeatLocation from "../assets/SeatLocation.png";
+import styles from "../componets/SeatRequest.module.css";
 
 export function SeatRequest({location, status, matchedInfo, setStatus}) {
 	const API_BASE_URL = 'http://localhost:8080/api/match'; // Spring BootサーバーのURL
@@ -21,23 +22,23 @@ export function SeatRequest({location, status, matchedInfo, setStatus}) {
 	};
 
 	return (
-		<div style={{ textAlign: 'center', marginTop: '30px' }}>
+		<div className={styles.container}>
 			{status === 'IDLE' && (
-				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: 'whitesmoke', borderRadius: '20px', border: '2px solid #333' }}>
-					<h2 style={{marginTop: '10px'}}>{location}の座席情報</h2>
-					<hr style={{ width: '20cm' }} />
+				<div className={styles.idle}>
+					<h2 >{location}の座席情報</h2>
+					<hr />
 					{location === "学食" && (
-						<img src={SchoolSeatLocation} style={{ width: '700px', marginBottom: '10px', borderRadius: '20px' }}></img>
+						<img src={SchoolSeatLocation}></img>
 					)}
-					<hr style={{ width: '20cm' }} />
-					<button onClick={requestSeat} style={{ width: '150px', height: '150px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', fontSize: '20px', border: 'none', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', marginBottom: '10px' }}>
+					<hr />
+					<button onClick={requestSeat}>
 						座席を希望
 					</button>
 				</div>
 			)}
 			{status === 'WAITING' && <p>近くの譲り手を探しています... (通信中)</p>}
 			{status === 'MATCHED' && matchedInfo && (
-				<div style={{ padding: '20px', backgroundColor: '#dbeafe', borderRadius: '10px' }}>
+				<div className={styles.matched}>
 					<h3>マッチング成立！</h3>
 					<p>場所: <strong>{matchedInfo.location}</strong></p>
 					<p>座席: <strong>{matchedInfo.seatNumber}番</strong></p>

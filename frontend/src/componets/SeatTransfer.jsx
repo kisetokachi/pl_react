@@ -1,5 +1,6 @@
 import { useState } from "react";
 import SchoolSeatLocation from "../assets/SeatLocation.png";
+import styles from "../componets/SeatTransfer.module.css";
 
 export function SeatTransfer({location, status, setStatus}) {
 	const [selectedSeat, setSelectedSeat] = useState(0);
@@ -31,31 +32,24 @@ export function SeatTransfer({location, status, setStatus}) {
 
 	return (
 		<div>
-			<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: 'whitesmoke', borderRadius: '20px', border: '2px solid #333', marginBottom: '20px' }}>
-				<h2 style={{marginTop: '10px'}}>{location}の座席情報</h2>
-				<hr style={{ width: '20cm' }} />
+			<div className={styles.seatInfo}>
+				<h2>{location}の座席情報</h2>
+				<hr />
 				{location === "学食" && (
-					<img src={SchoolSeatLocation} style={{ width: '700px', marginBottom: '10px', borderRadius: '20px' }}></img>
+					<img src={SchoolSeatLocation}></img>
 				)}
 			</div> 
 			<p>座席を指定してください:</p>
 			{/* ここで座席を決めている */}
 			{/* 学食の場合 */}
 			{location === "学食" && (
-				<div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '7px' }}>
+				<div className={styles.seats}>
 					{schoolSeats.map(seat => (
 					<button
 						key={seat}
 						disabled={status !== 'IDLE'}
 						onClick={() => {setSelectedSeat(seat)}}
-						style={{
-							width: '160px',
-							height: '50px',
-							backgroundColor: selectedSeat === seat ? '#10b981' : '#fff',
-							color: selectedSeat === seat ? 'white' : 'black',
-							border: '1px solid #ccc',
-							borderRadius: '5px'
-						}}
+						className={selectedSeat === seat ? styles.selected : ''}
 					>
 						{seat}
 					</button>
@@ -63,7 +57,7 @@ export function SeatTransfer({location, status, setStatus}) {
 				</div>
 			)}
 
-			<div style={{ marginTop: '30px', textAlign: 'center' }}>
+			<div className={styles.idle}>
 				{status === 'IDLE' && (
 					<button 
 						onClick={() => {
@@ -71,13 +65,13 @@ export function SeatTransfer({location, status, setStatus}) {
 							// console.log("送信ボタンが押されました")
 						}}
 						disabled={!selectedSeat}
-						style={{ padding: '15px 30px', backgroundColor: selectedSeat ? '#10b981' : '#d1d5db', color: 'white', border: 'none', borderRadius: '10px', width: '100%' }}>
+						className={selectedSeat ? styles.selected : ''}>
 						この席を譲る準備をする
 					</button>
 				)}
 				{status === 'WAITING' && <p>希望者を待機中... (席: {selectedSeat}番)</p>}
 				{status === 'MATCHED' && (
-					<div style={{ padding: '20px', backgroundColor: '#d1fae5', borderRadius: '10px' }}>
+					<div className={styles.matched}>
 						<h3>マッチング成立！</h3>
 						<p>希望者がこちらへ向かっています。</p>
 					</div>
