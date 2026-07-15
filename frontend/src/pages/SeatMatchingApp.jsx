@@ -100,12 +100,12 @@ export default function SeatMatchingApp() {
         <strong>{role === 'KOU' ? '座席を探す' : '座席を譲る'}</strong>
       </header>
 
-      {/* 甲 (座席希望者) の画面 */}
+      {/* (座席希望者) の画面 */}
       {role === 'KOU' && (
         <SeatRequest location={location} status={status} matchedInfo={matchedInfo} setStatus={() => setStatus} />
       )}
 
-      {/* 乙 (座席譲渡者) の画面 */}
+      {/* (座席譲渡者) の画面 */}
       {role === 'OTSU' && (
         <SeatTransfer location={location} status={status} setStatus={() => setStatus} />
       )}
