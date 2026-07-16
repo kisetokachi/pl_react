@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { SeatRequest } from "../componets/SeatRequest";
-import { SeatTransfer } from "../componets/SeatTransfer";
+import { SeatRequest } from "../components/SeatRequest";
+import { SeatTransfer } from "../components/SeatTransfer";
 
 export default function SeatMatchingApp() {
 	const [role, setRole] = useState('NONE'); // 'NONE', 'KOU' (甲), 'OTSU' (乙)

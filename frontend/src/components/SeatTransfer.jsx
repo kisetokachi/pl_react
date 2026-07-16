@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SchoolSeatLocation from "../assets/SeatLocation.png";
-import styles from "../componets/SeatTransfer.module.css";
+import styles from "../components/SeatTransfer.module.css";
 
 export function SeatTransfer({location, status, setStatus}) {
 	const [selectedSeat, setSelectedSeat] = useState(0);

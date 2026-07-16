@@ -1,5 +1,5 @@
 import SchoolSeatLocation from "../assets/SeatLocation.png";
-import styles from "../componets/SeatRequest.module.css";
+import styles from "../components/SeatRequest.module.css";
 
 export function SeatRequest({location, status, matchedInfo, setStatus}) {
 	const API_BASE_URL = 'http://localhost:8080/api/match'; // Spring BootサーバーのURL
