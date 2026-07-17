@@ -17,6 +17,7 @@ services:
       - "3000:3000" # Reactの開発サーバー用ポート
     tty: true # コンテナを常時起動させるための設定
     init: true
+    command: sh -c "npm install && npm run dev" # コンテナ起動時にVite開発サーバーを自動起動
     networks:
       - app-net # ★共通ネットワークに参加
 
@@ -37,6 +38,7 @@ services:
     ports:
       - "8080:8080" # Spring Bootのアプリケーション用ポート
     tty: true # コンテナを常時起動させるための設定
+    command: sh -c "cd demo && ./gradlew bootRun" # コンテナ起動時にSpring Bootを自動起動
     networks:
       - app-net # ★共通ネットワークに参加
 
