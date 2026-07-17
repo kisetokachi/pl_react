@@ -4,41 +4,47 @@ services:
   # ---------------------------------------------------------------------------
   frontend:
     build:
-      context: ..         # プロジェクトのルートディレクトリ（pl_react/）を基準にする
+      context: .. # プロジェクトのルートディレクトリ（pl_react/）を基準にする
       dockerfile: frontend/Dockerfile
     container_name: web-app-frontend
     volumes:
       # ホストの frontend フォルダをコンテナの /workspace/frontend にマウント
       - ../frontend:/workspace/frontend
-      # node_modulesをホスト側に同期させない（パフォーマンスとコンテナ内ビルドの安定化のため）
+      # node_modulesをホスト側に同期させない
       - /workspace/frontend/node_modules
     working_dir: /workspace/frontend
     ports:
-      - "3000:3000"         # Reactの開発サーバー用ポート（Viteの場合は5173などに変更）
-    tty: true               # コンテナを常時起動させるための設定
+      - "3000:3000" # Reactの開発サーバー用ポート
+    tty: true # コンテナを常時起動させるための設定
     init: true
+    networks:
+      - app-net # ★共通ネットワークに参加
 
   # ---------------------------------------------------------------------------
   # バックエンド (Spring Boot)
   # ---------------------------------------------------------------------------
   backend:
     build:
-      context: ..         # プロジェクトのルートディレクトリを基準にする
+      context: .. # プロジェクトのルートディレクトリを基準にする
       dockerfile: backend/Dockerfile
     container_name: web-app-backend
     volumes:
       # ホストの backend フォルダをコンテナの /workspace/backend にマウント
       - ../backend:/workspace/backend
-      # GradleまたはMavenのキャッシュを永続化（ビルドを高速化するため）
+      # Gradleのキャッシュを永続化
       - gradle-cache:/home/vscode/.gradle
     working_dir: /workspace/backend
     ports:
-      - "8080:8080"         # Spring Bootのアプリケーション用ポート
-    tty: true               # コンテナを常時起動させるための設定
-    # 必要に応じてデータベースなどのコンテナを追加した場合は、以下で依存関係を制御します
-    # depends_on:
-    #   - db
+      - "8080:8080" # Spring Bootのアプリケーション用ポート
+    tty: true # コンテナを常時起動させるための設定
+    networks:
+      - app-net # ★共通ネットワークに参加
 
 # バックエンドのビルドキャッシュなどを保持するための共通ボリューム定義
 volumes:
   gradle-cache:
+
+    # ★共通のブリッジネットワークを定義
+networks:
+  app-net:
+    driver: bridge

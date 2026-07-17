@@ -6,7 +6,10 @@
   "service": "frontend",
   // VS Codeが開くコンテナ内の作業ディレクトリ
   "workspaceFolder": "/workspace/frontend",
-
+  "forwardPorts": [
+    3000,
+    8080
+  ],
   "customizations": {
     "vscode": {
       "settings": {
@@ -15,15 +18,14 @@
         //"editor.formatOnSave": true
       },
       "extensions": [
-        "dbaeumer.vscode-eslint",      // ESLintサポート
-        "esbenp.prettier-vscode",      // Prettier（コード整形）
+        "dbaeumer.vscode-eslint", // ESLintサポート
+        "esbenp.prettier-vscode", // Prettier（コード整形）
         "dsznajder.es7-react-js-snippets" // Reactのコードスニペット
       ]
     }
   },
   // コンテナ起動後に実行したいコマンド（必要に応じて）
   // "postCreateCommand": "npm install",
-
   // コンテナを停止したときの振る舞い
   "shutdownAction": "stopCompose"
 }

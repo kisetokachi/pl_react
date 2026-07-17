@@ -5,14 +5,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 3000, // 起動ポートを3000に固定
-    proxy: {
-      // フロントエンドからの「/api」で始まる通信を、裏でSpring Boot（8080）に転送する
-      '/api': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        secure: false,
-      }
-    }
+    port: 3000, 
+    strictPort: true,
+    host: true,
   }
 })
