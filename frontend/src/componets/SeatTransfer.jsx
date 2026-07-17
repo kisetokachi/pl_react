@@ -1,10 +1,9 @@
 import { useState } from "react";
-import SchoolSeatLocation from "../assets/SeatLocation.png";
+import SchoolSeatLocation from "../assets/SchoolSeatLocation.jpg";
 import styles from "../componets/SeatTransfer.module.css";
 
-export function SeatTransfer({location, status, setStatus}) {
+export function SeatTransfer({location, status, seats, setStatus}) {
 	const [selectedSeat, setSelectedSeat] = useState(0);
-	const [schoolSeats, setSchoolSeats] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]);
 
 	const API_BASE_URL = 'http://localhost:8080/api/match'; // Spring BootサーバーのURL
 
@@ -44,7 +43,7 @@ export function SeatTransfer({location, status, setStatus}) {
 			{/* 学食の場合 */}
 			{location === "学食" && (
 				<div className={styles.seats}>
-					{schoolSeats.map(seat => (
+					{seats.map(seat => (
 					<button
 						key={seat}
 						disabled={status !== 'IDLE'}

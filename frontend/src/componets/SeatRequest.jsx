@@ -1,40 +1,47 @@
-import SchoolSeatLocation from "../assets/SeatLocation.png";
+import SchoolSeatLocation from "../assets/SchoolSeatLocation.jpg";
 import styles from "../componets/SeatRequest.module.css";
+import { useState, useEffect } from "react";
+import SeatRequestButton from "./SeatRequestButton";
 
-export function SeatRequest({location, status, matchedInfo, setStatus}) {
+export function SeatRequest({location, status, matchedInfo, changedSeat, seats, setStatus}) {
 	const API_BASE_URL = 'http://localhost:8080/api/match'; // Spring BootサーバーのURL
 
-	// 座りたいリクエストを送信
-	const requestSeat = async () => {
-		setStatus('WAITING');
+	const [possibleSeats, setPossibleSeats] = useState([1, 10, 24, 30]);
+
+	const getPossibleSeats = async () => {
 		try {
 			const response = await fetch(`${API_BASE_URL}/request`, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ userId: 'user-kou-123' }) // 実際の環境では認証情報などを使用
+				method: 'GET',
+				headers: { 'Content-Type': 'application/json' }
 			});
 			if (!response.ok) throw new Error('リクエストに失敗しました');
-		} catch (error) {
+			const data = await response.json();
+			setPossibleSeats(data.possibleSeats);
+			setStatus('IDLE');
+		}catch (error) {
 			console.error(error);
 			setStatus('IDLE');
 			alert('通信エラーが発生しました。');
 		}
-	};
+	}
+
+	//useEffect(() => {
+	//	getPossibleSeats();
+	//}, [changedSeat]);
 
 	return (
 		<div className={styles.container}>
 			{status === 'IDLE' && (
-				<div className={styles.idle}>
-					<h2 >{location}の座席情報</h2>
-					<hr />
-					{location === "学食" && (
-						<img src={SchoolSeatLocation}></img>
-					)}
-					<hr />
-					<button onClick={requestSeat}>
-						座席を希望
-					</button>
-				</div>
+				<>
+					<div className={styles.idle}>
+						<h2 >{location}の座席情報</h2>
+						<hr />
+						{location === "学食" && (
+							<img src={SchoolSeatLocation} alt="学食の座席図" />
+						)}
+					</div>
+					<SeatRequestButton location={location} seats={seats} possibleSeats={possibleSeats} setStatus={setStatus} />
+				</>
 			)}
 			{status === 'WAITING' && <p>近くの譲り手を探しています... (通信中)</p>}
 			{status === 'MATCHED' && matchedInfo && (

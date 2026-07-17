@@ -7,6 +7,8 @@ export default function SeatMatchingApp() {
   const [status, setStatus] = useState('IDLE'); // 'IDLE', 'WAITING', 'MATCHED'
   const [location, setLocation] = useState(null);
   const [matchedInfo, setMatchedInfo] = useState(null);
+  const [changedSeat, setChangedSeat] = useState(0);
+  const [schoolSeats, setSchoolSeats] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]);
 
   {/*
   // ログアウト処理
@@ -24,7 +26,7 @@ export default function SeatMatchingApp() {
   };
   */}
 
-  // マッチング状態の確認 (ポーリング処理)
+  // マッチング状態や席情報の確認 (ポーリング処理)
   useEffect(() => {
     let intervalId;
     if (status === 'WAITING') {
@@ -34,6 +36,7 @@ export default function SeatMatchingApp() {
           const response = await fetch(`${API_BASE_URL}/status?role=${role}`);
           if (response.ok) {
             const data = await response.json();
+            setChangedSeat(data.changedSeat);
             if (data.isMatched) {
               setStatus('MATCHED');
               setMatchedInfo(data.matchDetails); // { location: '学食', seatNumber: 5 } など
@@ -102,12 +105,12 @@ export default function SeatMatchingApp() {
 
       {/* (座席希望者) の画面 */}
       {role === 'KOU' && (
-        <SeatRequest location={location} status={status} matchedInfo={matchedInfo} setStatus={() => setStatus} />
+        <SeatRequest location={location} status={status} matchedInfo={matchedInfo} changedSeat={changedSeat} seats={schoolSeats} setStatus={() => setStatus} />
       )}
 
       {/* (座席譲渡者) の画面 */}
       {role === 'OTSU' && (
-        <SeatTransfer location={location} status={status} setStatus={() => setStatus} />
+        <SeatTransfer location={location} status={status} seats={schoolSeats} setStatus={() => setStatus} />
       )}
     </div>
   );
