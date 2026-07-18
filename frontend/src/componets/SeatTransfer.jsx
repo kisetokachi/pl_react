@@ -9,14 +9,13 @@ export function SeatTransfer({location, status, seats, setStatus}) {
 
 	// 座席を譲るリクエストを送信
 	const offerSeat = async () => {
-		if (!selectedSeat) return;
 		setStatus('WAITING');
 		try {
 			const response = await fetch(`${API_BASE_URL}/offer`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
-					userId: 'user-otsu-456',
+					userId: 'user-otsu-456', // 実際の環境では認証情報などを使用
 					location: location,
 					seatNumber: selectedSeat
 				})
@@ -24,8 +23,8 @@ export function SeatTransfer({location, status, seats, setStatus}) {
 			if (!response.ok) throw new Error('リクエストに失敗しました');
 		} catch (error) {
 			console.error(error);
+			alert('譲渡する座席の情報を送信できませんでした');
 			setStatus('IDLE');
-			alert('通信エラーが発生しました。');
 		}
 	};
 
@@ -61,7 +60,6 @@ export function SeatTransfer({location, status, seats, setStatus}) {
 					<button 
 						onClick={() => {
 							offerSeat()
-							// console.log("送信ボタンが押されました")
 						}}
 						disabled={!selectedSeat}
 						className={selectedSeat ? styles.selected : ''}>

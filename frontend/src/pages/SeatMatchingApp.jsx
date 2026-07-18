@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { SeatRequest } from "../componets/SeatRequest";
 import { SeatTransfer } from "../componets/SeatTransfer";
+import styles from "./SeatMatchingApp.module.css";
 
 export default function SeatMatchingApp() {
-	const [role, setRole] = useState('NONE'); // 'NONE', 'KOU' (甲), 'OTSU' (乙)
+  const API_BASE_URL = 'http://localhost:8080/api/match'; // Spring BootサーバーのURL
+
+	const [role, setRole] = useState('NONE'); // 'NONE', 'KIBOU', 'JOTO'
   const [status, setStatus] = useState('IDLE'); // 'IDLE', 'WAITING', 'MATCHED'
-  const [location, setLocation] = useState(null);
-  const [matchedInfo, setMatchedInfo] = useState(null);
-  const [changedSeat, setChangedSeat] = useState(0);
+  const [location, setLocation] = useState(null); // 場所の情報
+  const [matchedInfo, setMatchedInfo] = useState(null); // マッチング後のデータ
   const [schoolSeats, setSchoolSeats] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]);
 
   {/*
@@ -26,9 +28,11 @@ export default function SeatMatchingApp() {
   };
   */}
 
-  // マッチング状態や席情報の確認 (ポーリング処理)
+  // ポーリング処理
   useEffect(() => {
     let intervalId;
+
+    // マッチング結果の取得
     if (status === 'WAITING') {
       intervalId = setInterval(async () => {
         try {
@@ -36,37 +40,39 @@ export default function SeatMatchingApp() {
           const response = await fetch(`${API_BASE_URL}/status?role=${role}`);
           if (response.ok) {
             const data = await response.json();
-            setChangedSeat(data.changedSeat);
             if (data.isMatched) {
               setStatus('MATCHED');
               setMatchedInfo(data.matchDetails); // { location: '学食', seatNumber: 5 } など
             }
+            else setStatus('IDLE'); // マッチングが成立していない場合はもう一回選び直す
           }
         } catch (error) {
           console.error('ステータス確認エラー', error);
         }
       }, 3000); // 3秒ごとに確認
     }
+
     return () => clearInterval(intervalId);
   }, [status, role]);
+
+
 
   // --- UI描画部分 ---
 
   // 1. 役割選択画面
   if (role === 'NONE') {
     return (
-      <div style={{ padding: '20px', textAlign: 'center', fontFamily: 'sans-serif' }}>
+      <div className={styles.selectRole}>
         <h2>座席マッチングシステム</h2>
         <label>場所を選んでください: </label>
             <select name="location"
                     id="Location"
-                    onChange={(e) => setLocation(e.target.value)}
-                    style={{width: '150px', height: '30px', borderRadius: '10px', textAlign: 'center', marginTop: '20px'}}>
+                    onChange={(e) => setLocation(e.target.value)}>
               <option value="" value>--- 場所 ---</option>
               <option value="学食">学食</option>
               <option value="フードコート">フードコート</option>
             </select>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '40px' }}>
+        <div className={styles.selectRoleButton}>
           <button 
             onClick={() => {
               if (location == null)
@@ -74,9 +80,9 @@ export default function SeatMatchingApp() {
                 setRole('NONE')
                 alert("場所を選択してください")
               }
-              else setRole('KOU')
+              else setRole('KIBOU')
             }}
-            style={{ padding: '20px', fontSize: '18px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '10px' }}>
+            className={styles.selectKibouButton}>
             座席を探す
           </button>
           <button 
@@ -86,9 +92,9 @@ export default function SeatMatchingApp() {
                 setRole('NONE')
                 alert("場所を選択してください")
               }
-              else setRole('OTSU')
+              else setRole('JOTO')
             }}
-            style={{ padding: '20px', fontSize: '18px', backgroundColor: '#10b981', color: 'white', border: 'none', borderRadius: '10px' }}>
+            className={styles.selectJotoButton}>
             座席を譲る
           </button>
         </div>
@@ -98,19 +104,19 @@ export default function SeatMatchingApp() {
 
   // 2. メイン画面
   return (
-    <div style={{ fontFamily: 'sans-serif', padding: '10px' }}>
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#f3f4f6', padding: '10px', borderRadius: '8px', marginBottom: '15px', border: '2px solid #333' }}>
-        <strong>{role === 'KOU' ? '座席を探す' : '座席を譲る'}</strong>
+    <div className={styles.main}>
+      <header>
+        <strong>{role === 'KIBOU' ? '座席を探す' : '座席を譲る'}</strong>
       </header>
 
       {/* (座席希望者) の画面 */}
-      {role === 'KOU' && (
-        <SeatRequest location={location} status={status} matchedInfo={matchedInfo} changedSeat={changedSeat} seats={schoolSeats} setStatus={() => setStatus} />
+      {role === 'KIBOU' && (
+        <SeatRequest location={location} status={status} matchedInfo={matchedInfo} seats={schoolSeats} setStatus={setStatus} />
       )}
 
       {/* (座席譲渡者) の画面 */}
-      {role === 'OTSU' && (
-        <SeatTransfer location={location} status={status} seats={schoolSeats} setStatus={() => setStatus} />
+      {role === 'JOTO' && (
+        <SeatTransfer location={location} status={status} seats={schoolSeats} setStatus={setStatus} />
       )}
     </div>
   );
