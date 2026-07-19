@@ -7,7 +7,7 @@ export function SeatRequest({location, status, matchedInfo, seats, setStatus}) {
 	const API_BASE_URL = 'http://localhost:8080/api/match'; // Spring BootサーバーのURL
 
 	// 初期表示は空の配列にしておき、Javaから取得した本物のデータが入るようにします
-	const [possibleSeats, setPossibleSeats] = useState([]);
+	const [possibleSeats, setPossibleSeats] = useState([1, 2, 3]);
 
 	const getPossibleSeats = async () => {
 		try {
@@ -26,6 +26,7 @@ export function SeatRequest({location, status, matchedInfo, seats, setStatus}) {
 	}
 
 	// 🔄 3秒ごとに全自動でJavaに空席を見に行くタイマーの処理
+	/*
 	useEffect(() => {
 		// 1. 画面が開いた瞬間にまず1回チェックする
 		getPossibleSeats();
@@ -38,6 +39,7 @@ export function SeatRequest({location, status, matchedInfo, seats, setStatus}) {
 		// 3. 画面が閉じられたり移動した時は、タイマーを安全に止める（お片付け）
 		return () => clearInterval(timer);
 	}, []);
+	*/
 
 	// 元からあったuseEffectのコメントアウトは据え置き
 	//useEffect(() => {
@@ -46,17 +48,15 @@ export function SeatRequest({location, status, matchedInfo, seats, setStatus}) {
 
 	return (
 		<div className={styles.container}>
-			<>
-				<div className={styles.idle}>
-					<h2 >{location}の座席情報</h2>
-					<hr />
-					{location === "学食" && (
-						<img src={SchoolSeatLocation} alt="学食の座席図" />
-					)}
-				</div>
-				<SeatRequestButton location={location} seats={seats} possibleSeats={possibleSeats} setStatus={setStatus} />
-			</>
-			{status === 'WAITING' && <p className={styles.wait}>近くの譲り手を探しています... (通信中)</p>}
+			<h2 className={styles['line-title']}>座席を探す</h2>
+			<div className={styles.idle}>
+				<h2 >{location}の座席情報</h2>
+				<hr />
+				{location === "学食" && (
+					<img src={SchoolSeatLocation} alt="学食の座席図" />
+				)}
+			</div>
+			<SeatRequestButton location={location} status={status} seats={seats} possibleSeats={possibleSeats} setStatus={setStatus} />
 			{status === 'MATCHED' && matchedInfo && (
 				<div className={styles.matched}>
 					<h3>マッチング成立！</h3>

@@ -29,7 +29,8 @@ export function SeatTransfer({location, status, seats, setStatus}) {
 	};
 
 	return (
-		<div>
+		<div className={styles.container}>
+			<h2 className={styles['line-title']}>座席を譲る</h2>
 			<div className={styles.seatInfo}>
 				<h2>{location}の座席情報</h2>
 				<hr />
@@ -37,7 +38,7 @@ export function SeatTransfer({location, status, seats, setStatus}) {
 					<img src={SchoolSeatLocation}></img>
 				)}
 			</div> 
-			<p>座席を指定してください:</p>
+			<p style={{ marginBottom: '10px' }}>座席を指定してください:</p>
 			{/* ここで座席を決めている */}
 			{/* 学食の場合 */}
 			{location === "学食" && (
