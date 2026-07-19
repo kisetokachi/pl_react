@@ -1,3 +1,32 @@
+.container {
+	text-align: center;
+	padding: 10px;
+}
+
+.line-title {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.line-title::before,
+.line-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: #333;
+}
+
+.line-title::before {
+  margin-right: 16px;
+}
+
+.line-title::after {
+  margin-left: 16px;
+}
+
 .seatInfo {
 	display: flex;
 	flex-direction: column;
@@ -26,6 +55,7 @@
 	display: grid;
 	grid-template-columns: repeat(6, 1fr);
 	gap: 7px;
+	justify-items: center;
 }
 
 .seats button {
@@ -43,7 +73,7 @@
 }
 
 .idle {
-	margin-top: 30px;
+	margin-top: 10px;
 	text-align: center;
 }
 

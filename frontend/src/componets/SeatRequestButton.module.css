@@ -10,6 +10,7 @@
 	display: grid;
 	grid-template-columns: repeat(6, 1fr);
 	gap: 7px;
+	justify-items: center;
 }
 
 .seats button {
@@ -21,7 +22,29 @@
 	border-radius: 5px;
 }
 
+.seats button.included {
+	background-color: #87cefa;
+}
+
 .seats button.selected {
 	background-color: #10b981;
 	color: white;
+}
+
+.sending {
+	margin-top: 10px;
+	text-align: center;
+}
+
+.sending button {
+	padding: 15px 30px;
+	background-color: #d1d5db;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	width: 100%;
+}
+
+.sending button.selected {
+	background-color: #10b981;
 }
