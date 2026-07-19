@@ -6,7 +6,8 @@ import SeatRequestButton from "./SeatRequestButton";
 export function SeatRequest({location, status, matchedInfo, seats, setStatus}) {
 	const API_BASE_URL = 'http://localhost:8080/api/match'; // Spring BootサーバーのURL
 
-	const [possibleSeats, setPossibleSeats] = useState([1, 2, 3]);
+	// 初期表示は空の配列にしておき、Javaから取得した本物のデータが入るようにします
+	const [possibleSeats, setPossibleSeats] = useState([]);
 
 	const getPossibleSeats = async () => {
 		try {
@@ -17,16 +18,28 @@ export function SeatRequest({location, status, matchedInfo, seats, setStatus}) {
 			if (!response.ok) throw new Error('リクエストに失敗しました');
 			const data = await response.json();
 			setPossibleSeats(data.possibleSeats);
-		}catch (error) {
-			console.error(error);
-			alert('譲渡可能な座席情報の取得に失敗しました');
+		} catch (error) {
+			console.error("空席情報の取得に失敗しました:", error);
+			// 3秒ごとのタイマー中に毎回ポップアップが出ると画面がフリーズするため、
+			// アラートは出さずにブラウザのコンソールログのみに出力させています
 		}
 	}
 
+	// 🔄 3秒ごとに全自動でJavaに空席を見に行くタイマーの処理
 	useEffect(() => {
+		// 1. 画面が開いた瞬間にまず1回チェックする
 		getPossibleSeats();
+
+		// 2. 3秒（3000ミリ秒）ごとにずーっとチェックし続けるタイマーをセット
+		const timer = setInterval(() => {
+			getPossibleSeats();
+		}, 3000);
+
+		// 3. 画面が閉じられたり移動した時は、タイマーを安全に止める（お片付け）
+		return () => clearInterval(timer);
 	}, []);
 
+	// 元からあったuseEffectのコメントアウトは据え置き
 	//useEffect(() => {
 	//	console.log("SeatRequestコンポーネントがマウントされました。");
 	//}, []);
