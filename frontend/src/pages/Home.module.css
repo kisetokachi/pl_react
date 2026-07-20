@@ -1,0 +1,22 @@
+.container {
+	padding: 130px;
+	text-align: center;
+	font-family: sans-serif;
+}
+
+.container button {
+	padding: 10px;
+	font-size: 18px;
+	background-color: #328bf6;
+	color: white;
+	border: none;
+	border-radius: 10px;
+}
+
+.target {
+	padding: 20px;
+}
+
+.explanation {
+	padding: 10px;
+}

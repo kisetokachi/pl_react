@@ -3,6 +3,10 @@
 	padding: 10px;
 }
 
+.container p {
+	margin-bottom: 10px;
+}
+
 .line-title {
   display: flex;
   align-items: center;

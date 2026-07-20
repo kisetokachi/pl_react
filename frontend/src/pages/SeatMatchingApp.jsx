@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { SeatRequest } from "../componets/SeatRequest";
-import { SeatTransfer } from "../componets/SeatTransfer";
+import { SeatRequest } from "../components/SeatRequest";
+import { SeatTransfer } from "../components/SeatTransfer";
+import Header from "../components/Header";
 import styles from "./SeatMatchingApp.module.css";
 
 export default function SeatMatchingApp() {
@@ -10,7 +11,7 @@ export default function SeatMatchingApp() {
   const [status, setStatus] = useState('IDLE'); // 'IDLE', 'WAITING', 'MATCHED'
   const [location, setLocation] = useState(null); // 場所の情報
   const [matchedInfo, setMatchedInfo] = useState(null); // マッチング後のデータ
-  const [schoolSeats, setSchoolSeats] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]);
+  const [seats, setSeats] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]);
 
   {/*
   // ログアウト処理
@@ -27,6 +28,34 @@ export default function SeatMatchingApp() {
 	}
   };
   */}
+
+  // 場所ごとの座席情報を取得する
+  const getSeats = async () => {
+	try {
+		const response = await fetch(`${API_BASE_URL}`, {
+			method: 'GET',
+			headers: { 'Content-Type': 'application/json' }
+		});
+		const data = await response.json();
+		setSeats(data.seats);
+	}catch (error) {
+		console.error('座席情報を取得できませんでした', error);
+	}
+  }
+
+  // 場所の情報を取得する
+  const getLocation = async () => {
+	try {
+		const response = await fetch(`${API_BASE_URL}`, {
+			method: 'GET',
+			header: {'Content-Type': 'application/json'}
+		});
+		const data = await response.json();
+		setLocation(data.location);
+	}catch (error) {
+		console.error('場所情報を取得できませんでした', error);
+	}
+  }
 
   // ポーリング処理
   useEffect(() => {
@@ -54,6 +83,18 @@ export default function SeatMatchingApp() {
 
 	return () => clearInterval(intervalId);
   }, [status, role]);
+
+
+  // 初回レンダリング時のみフェッチする
+//   useEffect(() => {
+
+// 	// 座席情報の取得
+// 	getSeats();
+
+// 	// 場所情報の取得
+// 	getLocation();
+
+//   }, []);
 
 
 
@@ -105,19 +146,16 @@ export default function SeatMatchingApp() {
   // 2. メイン画面
   return (
 	<div className={styles.main}>
-	  <header>
-		{/* <strong>{role === 'KIBOU' ? '座席を探す' : '座席を譲る'}</strong> */}
-		<strong>座席マッチングアプリ</strong>
-	  </header>
+	  <Header />
 
 	  {/* (座席希望者) の画面 */}
 	  {role === 'KIBOU' && (
-		<SeatRequest location={location} status={status} matchedInfo={matchedInfo} seats={schoolSeats} setStatus={setStatus} />
+		<SeatRequest location={location} status={status} matchedInfo={matchedInfo} seats={seats} setStatus={setStatus} />
 	  )}
 
 	  {/* (座席譲渡者) の画面 */}
 	  {role === 'JOTO' && (
-		<SeatTransfer location={location} status={status} seats={schoolSeats} setStatus={setStatus} />
+		<SeatTransfer location={location} status={status} seats={seats} setStatus={setStatus} />
 	  )}
 	</div>
   );

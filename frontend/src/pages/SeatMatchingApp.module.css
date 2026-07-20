@@ -37,23 +37,4 @@
 
 .main {
 	font-family: sans-serif;
-	/* padding: 10px; */
-}
-
-.main header {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	/* background-color: rgb(7, 231, 247); */
-	padding: 5px;
-	/* border-radius: 8px; */
-	/* margin-bottom: 10px; */
-	/* border: 2px solid #333 */
-	/* border-top: 2px solid #333; */
-	border-bottom: 1px solid #ccc;
-	/* margin-top: 10px; */
-}
-
-.main strong {
-	color: black;
 }

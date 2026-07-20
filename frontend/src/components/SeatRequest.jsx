@@ -1,5 +1,6 @@
 import SchoolSeatLocation from "../assets/SchoolSeatLocation.jpg";
-import styles from "../componets/SeatRequest.module.css";
+import FoodcourtSeatLocation from "../assets/FoodcourtSeatLocation.jpg"
+import styles from "./SeatRequest.module.css";
 import { useState, useEffect } from "react";
 import SeatRequestButton from "./SeatRequestButton";
 
@@ -41,11 +42,6 @@ export function SeatRequest({location, status, matchedInfo, seats, setStatus}) {
 	}, []);
 	*/
 
-	// 元からあったuseEffectのコメントアウトは据え置き
-	//useEffect(() => {
-	//	console.log("SeatRequestコンポーネントがマウントされました。");
-	//}, []);
-
 	return (
 		<div className={styles.container}>
 			<h2 className={styles['line-title']}>座席を探す</h2>
@@ -55,16 +51,21 @@ export function SeatRequest({location, status, matchedInfo, seats, setStatus}) {
 				{location === "学食" && (
 					<img src={SchoolSeatLocation} alt="学食の座席図" />
 				)}
+				{location === "フードコート" && (
+					<img src={FoodcourtSeatLocation} alt="フードコートの座席図" />
+				)}
 			</div>
 			<SeatRequestButton location={location} status={status} seats={seats} possibleSeats={possibleSeats} setStatus={setStatus} />
-			{status === 'MATCHED' && matchedInfo && (
+			
+			{/* マッチングが成立したときの表示 */}
+			{/* {status === 'MATCHED' && matchedInfo && (
 				<div className={styles.matched}>
 					<h3>マッチング成立！</h3>
 					<p>場所: <strong>{matchedInfo.location}</strong></p>
 					<p>座席: <strong>{matchedInfo.seatNumber}番</strong></p>
 					<p>速やかに移動してください。</p>
 				</div>
-			)}
+			)} */}
 		</div>
 	)
 }

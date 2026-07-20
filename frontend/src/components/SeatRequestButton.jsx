@@ -1,6 +1,6 @@
 import { useState } from "react";
 import clsx from 'clsx';
-import styles from "../componets/SeatRequestButton.module.css";
+import styles from "./SeatRequestButton.module.css";
 
 export default function SeatRequestButton({location, status, seats, possibleSeats, setStatus}) {
 	const API_BASE_URL = 'http://localhost:8080/api/match'; // Spring BootサーバーのURL
