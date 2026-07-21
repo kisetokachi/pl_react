@@ -1,0 +1,40 @@
+.selectRole {
+	padding: 20px;
+	text-align: center;
+	font-family: sans-serif;
+}
+
+.selectRole select {
+	width: 150px;
+	height: 30px;
+	border-radius: 10px;
+	text-align: center;
+	margin-top: 20px;
+}
+
+.selectRoleButton {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	margin-top: 40px;
+}
+
+.selectRoleButton button {
+	padding: 20px;
+	font-size: 18px;
+	color: white;
+	border: none;
+	border-radius: 10px;
+}
+
+.selectKibouButton {
+	background-color: #3b82f6;
+}
+
+.selectJotoButton {
+	background-color: #10b981;
+}
+
+.main {
+	font-family: sans-serif;
+}
