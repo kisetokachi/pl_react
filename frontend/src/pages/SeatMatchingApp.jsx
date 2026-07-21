@@ -11,17 +11,20 @@ export default function SeatMatchingApp() {
   const [status, setStatus] = useState('IDLE'); // 'IDLE', 'WAITING', 'MATCHED', 'SUBMITTED'
   const [location, setLocation] = useState(null); // 場所の情報
   const [matchedInfo, setMatchedInfo] = useState(null); // マッチング後のデータ
-  const [seats, setSeats] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]);
+  
+  // 初期値は空配列にしておき、サーバーから送られてきたデータで上書きします
+  const [seats, setSeats] = useState([]);
 
-  // 場所ごとの座席情報を取得する
-  const getSeats = async () => {
+  // 1. 場所ごとの座席情報をサーバーから取得する（locationをクエリパラメータで渡す）
+  const getSeats = async (selectedLocation) => {
     try {
-      const response = await fetch(`${API_BASE_URL}`, {
+      const response = await fetch(`${API_BASE_URL}?location=${encodeURIComponent(selectedLocation)}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
       });
       if (response.ok) {
         const data = await response.json();
+        // サーバーから返ってきた座席配列をセット
         setSeats(data.seats);
       }
     } catch (error) {
@@ -29,13 +32,13 @@ export default function SeatMatchingApp() {
     }
   };
 
-  // 場所の情報を送信する
-  const sendLocation = async () => {
+  // 2. 選ばれた場所の情報をサーバーに送信する
+  const sendLocation = async (selectedLocation) => {
     try {
       const response = await fetch(`${API_BASE_URL}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ location: location })
+        body: JSON.stringify({ location: selectedLocation })
       });
       if (!response.ok) throw new Error('リクエストに失敗しました');
     } catch (error) {
@@ -43,61 +46,63 @@ export default function SeatMatchingApp() {
     }
   };
 
-  // 属性選択ボタンが押されたときの処理
-  const handleClick = (role) => {
-    if (location == null) {
+  // 3. 属性選択ボタンが押されたときの処理（async化して順番に処理を行う）
+  const handleClick = async (selectedRole) => {
+    if (!location) {
       setRole('NONE');
       alert("場所を選択してください");
-    } else {
-      setRole(role);
-      sendLocation();
-      getSeats();
+      return;
     }
+
+    setRole(selectedRole);
+    
+    // ① サーバーへ場所を送信
+    await sendLocation(location);
+    // ② 選択された場所に対応する座席情報を取得
+    await getSeats(location);
   };
 
   // ポーリング処理（ステータス監視）
   useEffect(() => {
     let intervalId;
 
-	// マッチング結果の取得
-	if (role === 'KIBOU' && status === 'WAITING') {
-	  intervalId = setInterval(async () => {
-		try {
-		  // 自身の状態をサーバーに確認するエンドポイント
-		  const response = await fetch(`${API_BASE_URL}/status?role=${role}`);
-		  if (response.ok) {
-			const data = await response.json();
-			if (data.isMatched) {
-			  setStatus('MATCHED');
-			  setMatchedInfo(data.matchDetails); // { location: '学食', seatNumber: 5 } など
-			}
-			else setStatus('IDLE'); // マッチングが成立していない場合はもう一回選び直す
-		  }
-		} catch (error) {
-		  console.error('ステータス確認エラー', error);
-		}
-	  }, 3000); // 3秒ごとに確認
-	}
+    if (role === 'KIBOU' && status === 'WAITING') {
+      intervalId = setInterval(async () => {
+        try {
+          const response = await fetch(`${API_BASE_URL}/status?role=${role}`);
+          if (response.ok) {
+            const data = await response.json();
+            if (data.isMatched) {
+              setStatus('MATCHED');
+              setMatchedInfo(data.matchDetails);
+            } else {
+              setStatus('IDLE');
+            }
+          }
+        } catch (error) {
+          console.error('ステータス確認エラー', error);
+        }
+      }, 3000);
+    }
 
-	if (role === 'JOTO' && status === 'SUBMITTED') {
-		intervalId = setInterval(async () => {
-		try {
-		  // 自身の状態をサーバーに確認するエンドポイント
-		  const response = await fetch(`${API_BASE_URL}/status?role=${role}`);
-		  if (response.ok) {
-			const data = await response.json();
-			if (data.isMatched) {
-			  setStatus('MATCHED');
-			  setMatchedInfo(data.matchDetails); // { location: '学食', seatNumber: 5 } など
-			}
-		  }
-		} catch (error) {
-		  console.error('ステータス確認エラー', error);
-		}
-	  }, 3000); // 3秒ごとに確認
-	}
+    if (role === 'JOTO' && status === 'SUBMITTED') {
+      intervalId = setInterval(async () => {
+        try {
+          const response = await fetch(`${API_BASE_URL}/status?role=${role}`);
+          if (response.ok) {
+            const data = await response.json();
+            if (data.isMatched) {
+              setStatus('MATCHED');
+              setMatchedInfo(data.matchDetails);
+            }
+          }
+        } catch (error) {
+          console.error('ステータス確認エラー', error);
+        }
+      }, 3000);
+    }
 
-	return () => clearInterval(intervalId);
+    return () => clearInterval(intervalId);
   }, [status, role]);
 
   if (role === 'NONE') {
