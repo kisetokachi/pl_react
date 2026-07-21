@@ -10,8 +10,8 @@ export default function Home() {
 		<div className={styles.container}>
 			<h1>座席マッチングシステムへようこそ</h1>
 			<p className={styles.target}>アプリを使用するには以下をクリックしてください</p>
-			<button onClick={() => navigate('/match')}>
-				マッチング画面を開く
+			<button onClick={() => navigate('/login')}>
+				マッチング画面を開く(ログイン)
 			</button>
 			<hr />
 			<p className={styles.explanation}>座席マッチングシステムでは、フードコートなどで席に座りたい人と譲りたい人をマッチングさせるサービスを提供しています</p>
