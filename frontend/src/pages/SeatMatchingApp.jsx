@@ -8,7 +8,7 @@ export default function SeatMatchingApp() {
   const API_BASE_URL = 'http://localhost:8080/api/match'; // Spring BootサーバーのURL
 
   const [role, setRole] = useState('NONE'); // 'NONE', 'KIBOU', 'JOTO'
-  const [status, setStatus] = useState('IDLE'); // 'IDLE', 'WAITING', 'MATCHED'
+  const [status, setStatus] = useState('IDLE'); // 'IDLE', 'WAITING', 'MATCHED', 'SUBMITTED'
   const [location, setLocation] = useState(null); // 場所の情報
   const [matchedInfo, setMatchedInfo] = useState(null); // マッチング後のデータ
   const [seats, setSeats] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]);
@@ -84,7 +84,7 @@ export default function SeatMatchingApp() {
 	let intervalId;
 
 	// マッチング結果の取得
-	if (status === 'WAITING') {
+	if (role === 'KIBOU' && status === 'WAITING') {
 	  intervalId = setInterval(async () => {
 		try {
 		  // 自身の状態をサーバーに確認するエンドポイント
@@ -96,6 +96,24 @@ export default function SeatMatchingApp() {
 			  setMatchedInfo(data.matchDetails); // { location: '学食', seatNumber: 5 } など
 			}
 			else setStatus('IDLE'); // マッチングが成立していない場合はもう一回選び直す
+		  }
+		} catch (error) {
+		  console.error('ステータス確認エラー', error);
+		}
+	  }, 3000); // 3秒ごとに確認
+	}
+
+	if (role === 'JOTO' && status === 'SUBMITTED') {
+		intervalId = setInterval(async () => {
+		try {
+		  // 自身の状態をサーバーに確認するエンドポイント
+		  const response = await fetch(`${API_BASE_URL}/status?role=${role}`);
+		  if (response.ok) {
+			const data = await response.json();
+			if (data.isMatched) {
+			  setStatus('MATCHED');
+			  setMatchedInfo(data.matchDetails); // { location: '学食', seatNumber: 5 } など
+			}
 		  }
 		} catch (error) {
 		  console.error('ステータス確認エラー', error);

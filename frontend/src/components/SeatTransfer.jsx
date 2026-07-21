@@ -24,12 +24,11 @@ export function SeatTransfer({location, status, seats, setStatus}) {
 				})
 			});
 			if (!response.ok) throw new Error('リクエストに失敗しました');
-			setStatus('MATCHED');
+			setStatus('SUBMITTED');
 		} catch (error) {
 			console.error(error);
 			alert('譲渡する座席の情報を送信できませんでした');
 			setStatus('IDLE');
-			setStatus('MATCHED');
 		}
 	};
 
@@ -78,9 +77,14 @@ export function SeatTransfer({location, status, seats, setStatus}) {
 				</div>
 			)}
 
-			{/* マッチングが成立したときの表示 */}
-			{status === 'MATCHED' && (
+			{/* 座席を送信したときの表示 */}
+			{status === 'SUBMITTED' && (
 				<TransferSubmitted />
+			)}
+
+			{/* マッチング成立したときの表示 */}
+			{status === 'MATCHED' && (
+				<h2>マッチングが成立しました</h2>
 			)}
 		</>
 	)
