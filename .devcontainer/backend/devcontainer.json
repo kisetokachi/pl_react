@@ -6,22 +6,22 @@
   "service": "backend",
   // VS Codeが開くコンテナ内の作業ディレクトリ
   "workspaceFolder": "/workspace/backend",
-
   "customizations": {
     "vscode": {
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash"
       },
       "extensions": [
-        "vscjava.vscode-java-pack",         // Java開発に必要な機能が詰まったパック
-        "vmware.vscode-spring-boot",       // Spring Bootの入力補完やナビゲーション
+        "vscjava.vscode-java-pack", // Java開発に必要な機能が詰まったパック
+        "vmware.vscode-spring-boot", // Spring Bootの入力補完やナビゲーション
         "vscjava.vscode-spring-initializr", // VS Code上でSpringプロジェクトを作成するツール
-        "vscjava.vscode-lombok"             // Lombok（Getter/Setter自動生成）を使う場合
+        "vscjava.vscode-lombok" // Lombok（Getter/Setter自動生成）を使う場合
       ]
     }
   },
   // コンテナ内で特定のポート（Spring Bootの8080など）をローカルPC側に見せる設定
-  "forwardPorts": [8080],
-
+  "forwardPorts": [
+    8080
+  ],
   "shutdownAction": "stopCompose"
 }
