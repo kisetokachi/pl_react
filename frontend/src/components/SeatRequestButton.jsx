@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import clsx from 'clsx';
 import styles from "./SeatRequestButton.module.css";
 
@@ -36,7 +37,9 @@ export default function SeatRequestButton({location, status, seats, possibleSeat
 					{seats.map(seat => (
 						<button key={seat}
 								disabled={!possibleSeats.includes(seat)}
-								onClick={() => {setSelectedSeat(seat)}}
+								onClick={() => {
+									setSelectedSeat(seat)
+								}}
 								className={clsx(
 									possibleSeats.includes(seat) && styles.included,
 									seat === selectedSeat && styles.selected
