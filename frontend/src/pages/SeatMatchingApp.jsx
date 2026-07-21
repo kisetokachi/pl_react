@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import styles from "./SeatMatchingApp.module.css";
 
 export default function SeatMatchingApp() {
-  const API_BASE_URL = 'http://localhost:8080/api/match'; // Spring BootサーバーのURL
+  const API_BASE_URL = 'http://localhost:8080/api/match';
 
   const [role, setRole] = useState('NONE'); // 'NONE', 'KIBOU', 'JOTO'
   const [status, setStatus] = useState('IDLE'); // 'IDLE', 'WAITING', 'MATCHED', 'SUBMITTED'
@@ -13,75 +13,51 @@ export default function SeatMatchingApp() {
   const [matchedInfo, setMatchedInfo] = useState(null); // マッチング後のデータ
   const [seats, setSeats] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]);
 
-  {/*
-  // ログアウト処理
-  const handleLogout = async () => {
-	try {
-	  await fetch(`${API_BASE_URL}/logout`, { method: 'POST' });
-	} catch (error) {
-	  console.error('ログアウト通信エラー:', error);
-	} finally {
-	  setRole('NONE');
-	  setStatus('IDLE');
-	  setSelectedSeat(null);
-	  setMatchedInfo(null);
-	}
-  };
-  */}
-
   // 場所ごとの座席情報を取得する
   const getSeats = async () => {
-	try {
-		const response = await fetch(`${API_BASE_URL}`, {
-			method: 'GET',
-			headers: { 'Content-Type': 'application/json' }
-		});
-		if (response.ok)
-		{
-			const data = await response.json();
-			setSeats(data.seats);
-		}
-	}catch (error) {
-		console.error('座席情報を取得できませんでした', error);
-	}
-  }
+    try {
+      const response = await fetch(`${API_BASE_URL}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setSeats(data.seats);
+      }
+    } catch (error) {
+      console.error('座席情報を取得できませんでした', error);
+    }
+  };
 
   // 場所の情報を送信する
   const sendLocation = async () => {
-	try {
-		const response = await fetch(`${API_BASE_URL}`, {
-			method: 'POST',
-			header: {'Content-Type': 'application/json'},
-			body: JSON.stringify({
-				location: location
-			})
-		});
-		if (response.ok) throw new Error('リクエストに失敗しました');
-	}catch (error) {
-		console.error('場所情報を送信できませんでした', error);
-	}
-  }
+    try {
+      const response = await fetch(`${API_BASE_URL}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ location: location })
+      });
+      if (!response.ok) throw new Error('リクエストに失敗しました');
+    } catch (error) {
+      console.error('場所情報を送信できませんでした', error);
+    }
+  };
 
   // 属性選択ボタンが押されたときの処理
   const handleClick = (role) => {
-	if (location == null)
-	{
-		setRole('NONE')
-		alert("場所を選択してください")
-	}
-	else
-	{
-		setRole(role)
-		// 場所情報の送信
-		sendLocation()
-		// 座席情報の取得
-		getSeats()
-	}
-  }
+    if (location == null) {
+      setRole('NONE');
+      alert("場所を選択してください");
+    } else {
+      setRole(role);
+      sendLocation();
+      getSeats();
+    }
+  };
 
-  // ポーリング処理
+  // ポーリング処理（ステータス監視）
   useEffect(() => {
-	let intervalId;
+    let intervalId;
 
 	// マッチング結果の取得
 	if (role === 'KIBOU' && status === 'WAITING') {
@@ -124,57 +100,37 @@ export default function SeatMatchingApp() {
 	return () => clearInterval(intervalId);
   }, [status, role]);
 
-
-
-  // --- UI描画部分 ---
-
-  // 1. 役割選択画面
   if (role === 'NONE') {
-	return (
-	  <div className={styles.selectRole}>
-		<h2>座席マッチングシステム</h2>
-		<label>場所を選んでください: </label>
-			<select name="location"
-					id="location"
-					onChange={(e) => setLocation(e.target.value)}>
-			  <option value="" value>--- 場所 ---</option>
-			  <option value="学食">学食</option>
-			  <option value="フードコート">フードコート</option>
-			</select>
-		<div className={styles.selectRoleButton}>
-		  <button 
-			onClick={() => {
-				handleClick('KIBOU')
-			}}
-			className={styles.selectKibouButton}>
-			座席を探す
-		  </button>
-		  <button 
-			onClick={() => {
-				handleClick('JOTO')
-			}}
-			className={styles.selectJotoButton}>
-			座席を譲る
-		  </button>
-		</div>
-	  </div>
-	);
+    return (
+      <div className={styles.selectRole}>
+        <h2>座席マッチングシステム</h2>
+        <label>場所を選んでください: </label>
+        <select name="location" id="location" onChange={(e) => setLocation(e.target.value)}>
+          <option value="">--- 場所 ---</option>
+          <option value="学食">学食</option>
+          <option value="フードコート">フードコート</option>
+        </select>
+        <div className={styles.selectRoleButton}>
+          <button onClick={() => handleClick('KIBOU')} className={styles.selectKibouButton}>
+            座席を探す
+          </button>
+          <button onClick={() => handleClick('JOTO')} className={styles.selectJotoButton}>
+            座席を譲る
+          </button>
+        </div>
+      </div>
+    );
   }
 
-  // 2. メイン画面
   return (
-	<div className={styles.main}>
-	  <Header />
-
-	  {/* (座席希望者) の画面 */}
-	  {role === 'KIBOU' && (
-		<SeatRequest location={location} status={status} matchedInfo={matchedInfo} seats={seats} setStatus={setStatus} />
-	  )}
-
-	  {/* (座席譲渡者) の画面 */}
-	  {role === 'JOTO' && (
-		<SeatTransfer location={location} status={status} seats={seats} setStatus={setStatus} />
-	  )}
-	</div>
+    <div className={styles.main}>
+      <Header />
+      {role === 'KIBOU' && (
+        <SeatRequest location={location} status={status} matchedInfo={matchedInfo} seats={seats} setStatus={setStatus} />
+      )}
+      {role === 'JOTO' && (
+        <SeatTransfer location={location} status={status} seats={seats} setStatus={setStatus} />
+      )}
+    </div>
   );
 }
