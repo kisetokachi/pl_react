@@ -2,10 +2,10 @@ package com.example.demo.dto;
 
 import java.util.List;
 
-public class SeatResponse {
+public class PossibleSeatsResponse {
     private List<Integer> possibleSeats;
 
-    public SeatResponse(List<Integer> possibleSeats) {
+    public PossibleSeatsResponse(List<Integer> possibleSeats) {
         this.possibleSeats = possibleSeats;
     }
 

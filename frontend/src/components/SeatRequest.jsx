@@ -27,7 +27,6 @@ export function SeatRequest({location, status, matchedInfo, seats, setStatus}) {
 	}
 
 	// 🔄 3秒ごとに全自動でJavaに空席を見に行くタイマーの処理
-	/*
 	useEffect(() => {
 		// 1. 画面が開いた瞬間にまず1回チェックする
 		getPossibleSeats();
@@ -40,7 +39,6 @@ export function SeatRequest({location, status, matchedInfo, seats, setStatus}) {
 		// 3. 画面が閉じられたり移動した時は、タイマーを安全に止める（お片付け）
 		return () => clearInterval(timer);
 	}, []);
-	*/
 
 	return (
 		<div className={styles.container}>
