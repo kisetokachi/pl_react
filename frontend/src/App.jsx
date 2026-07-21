@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // 作成したページコンポーネントをインポート
 import Home from './pages/Home';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 import SeatMatchingApp from './pages/SeatMatchingApp';
 import AfterTransfer from './pages/TransferSubmitted';
 import TransferSubmitted from './pages/TransferSubmitted';
@@ -14,6 +16,9 @@ function App() {
       <Routes>
         {/* http://localhost:3000/ のときに表示するページ */}
         <Route path="/" element={<Home />} />
+
+        <Route path="/login" element={<Login />}/>
+        <Route path="/signup" element={<SignUp />}/>
 
         {/* http://localhost:3000/match のときに表示するページ */}
         <Route path="/match" element={<SeatMatchingApp />} />
