@@ -29,6 +29,7 @@ export function SeatTransfer({location, status, seats, setStatus}) {
 			console.error(error);
 			alert('譲渡する座席の情報を送信できませんでした');
 			setStatus('IDLE');
+			setStatus('MATCHED');
 		}
 	};
 
