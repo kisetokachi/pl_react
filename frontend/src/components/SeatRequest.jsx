@@ -44,10 +44,9 @@ export function SeatRequest({location, status, matchedInfo, seats, setStatus}) {
 			{/* 座席を選択しているときの表示 */}
 			{status === 'IDLE' && (
 				<div className={styles.container}>
-					<h2 className={styles['line-title']}>座席を探す</h2>
+					<div className={styles.pageTitle}><span>座席を探す</span><h1>空いている席を選択</h1><p>{location}のリアルタイム座席情報です</p></div>
 					<div className={styles.idle}>
-						<h2 >{location}の座席情報</h2>
-						<hr />
+						<div className={styles.cardTitle}><h2>{location} 座席マップ</h2><span><i></i>空席情報を更新中</span></div>
 						{location === "学食" && (
 							<img src={SchoolSeatLocation} alt="学食の座席図" />
 						)}

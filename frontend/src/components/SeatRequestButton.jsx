@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import clsx from 'clsx';
 import styles from "./SeatRequestButton.module.css";
 
-export default function SeatRequestButton({location, status, seats, possibleSeats, setStatus}) {
+export default function SeatRequestButton({status, seats, possibleSeats, setStatus}) {
 	const API_BASE_URL = 'http://localhost:8080/api/match'; // Spring BootサーバーのURL
 
 	const [selectedSeat, setSelectedSeat] = useState(0);
@@ -31,8 +30,8 @@ export default function SeatRequestButton({location, status, seats, possibleSeat
 	return (
 		<>
 			<div className={styles.buttons}>
-				{status === 'IDLE' && <p>座りたい座席を指定してください:</p>}
-				{status === 'WAITING' && <p>マッチング結果を受信中ですのでお待ちください...</p>}
+				{status === 'IDLE' && <div className={styles.seatHeader}><b>希望する座席</b><span><i className={styles.open}></i>空席 <i className={styles.unavailable}></i>利用不可</span></div>}
+				{status === 'WAITING' && <p className={styles.waiting}>マッチング結果を確認しています…</p>}
 				<div className={styles.seats}>
 					{seats.map(seat => (
 						<button key={seat}
@@ -52,7 +51,7 @@ export default function SeatRequestButton({location, status, seats, possibleSeat
 
 			<div className={styles.sending}>
 				<button onClick={() => {requestSeat(selectedSeat)}} disabled={!selectedSeat} className={selectedSeat ? styles.selected : ''}>
-					{status === 'IDLE' && 'この座席を希望する'}
+					{status === 'IDLE' && (selectedSeat ? `座席 ${selectedSeat} を希望する` : '座席を選択してください')}
 					{status === 'WAITING' && '希望の座席を送信完了'}
 				</button>
 			</div>

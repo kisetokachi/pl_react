@@ -44,13 +44,16 @@ export default function SignUp() {
     };
 
     return (
+        <main className={styles.page}>
         <div className={styles.container}>
-            <h1>新規登録</h1>
+            <button className={styles.brand} onClick={() => navigate('/')} aria-label="トップへ戻る"><span>S</span>SeatLink</button>
+            <div className={styles.heading}><span>無料ではじめる</span><h1>アカウント作成</h1><p>必要な情報を入力してください</p></div>
 
             <form onSubmit={handleSignUp} className={styles.form}>
                 <div className={styles.inputGroup}>
-                    <label>ユーザー名</label>
+                    <label htmlFor="name">ユーザー名</label>
                     <input
+                        id="name"
                         type="text"
                         placeholder="ユーザー名"
                         value={name}
@@ -60,8 +63,9 @@ export default function SignUp() {
                 </div>
 
                 <div className={styles.inputGroup}>
-                    <label>メールアドレス</label>
+                    <label htmlFor="email">メールアドレス</label>
                     <input
+                        id="email"
                         type="email"
                         placeholder="example@example.com"
                         value={email}
@@ -71,8 +75,9 @@ export default function SignUp() {
                 </div>
 
                 <div className={styles.inputGroup}>
-                    <label>パスワード</label>
+                    <label htmlFor="password">パスワード</label>
                     <input
+                        id="password"
                         type="password"
                         placeholder="パスワード"
                         value={password}
@@ -82,8 +87,9 @@ export default function SignUp() {
                 </div>
 
                 <div className={styles.inputGroup}>
-                    <label>パスワード（確認）</label>
+                    <label htmlFor="confirmPassword">パスワード（確認）</label>
                     <input
+                        id="confirmPassword"
                         type="password"
                         placeholder="もう一度入力"
                         value={confirmPassword}
@@ -97,19 +103,8 @@ export default function SignUp() {
                 </button>
             </form>
 
-            <button
-                className={styles.loginButton}
-                onClick={() => navigate("/login")}
-            >
-                ログイン画面へ
-            </button>
-
-            <button
-                className={styles.backButton}
-                onClick={() => navigate("/")}
-            >
-                トップへ戻る
-            </button>
+            <p className={styles.loginText}>すでにアカウントをお持ちですか？ <button onClick={() => navigate("/login")}>ログイン</button></p>
         </div>
+        </main>
     );
 }

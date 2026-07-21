@@ -1,4 +1,3 @@
-import Header from "./Header"
 import styles from "./TransferSubmitted.module.css"
 
 export default function TransferSubmitted() {

@@ -1,40 +1,22 @@
-.selectRole {
-	padding: 20px;
-	text-align: center;
-	font-family: sans-serif;
-}
-
-.selectRole select {
-	width: 150px;
-	height: 30px;
-	border-radius: 10px;
-	text-align: center;
-	margin-top: 20px;
-}
-
-.selectRoleButton {
-	display: flex;
-	flex-direction: column;
-	gap: 20px;
-	margin-top: 40px;
-}
-
-.selectRoleButton button {
-	padding: 20px;
-	font-size: 18px;
-	color: white;
-	border: none;
-	border-radius: 10px;
-}
-
-.selectKibouButton {
-	background-color: #3b82f6;
-}
-
-.selectJotoButton {
-	background-color: #10b981;
-}
-
-.main {
-	font-family: sans-serif;
-}
+.selectionPage, .main { min-height: 100vh; background: #f6f8fc; }
+.selectRole { width: min(100% - 32px, 540px); margin: 58px auto; padding: 36px 38px; border: 1px solid var(--line); border-radius: 22px; background: white; box-shadow: var(--shadow); }
+.step { width: max-content; margin: 0 auto 13px; padding: 5px 10px; border-radius: 99px; background: #edf3ff; color: var(--primary); font-size: 10px; font-weight: 800; letter-spacing: .08em; }
+.selectRole h1 { margin: 0 0 8px; color: var(--ink); font-size: 27px; text-align: center; letter-spacing: -.04em; }
+.selectRole > p { margin-bottom: 28px; color: var(--muted); text-align: center; font-size: 13px; }
+.selectRole label { display: block; margin-bottom: 7px; color: #344054; font-size: 12px; font-weight: 700; }
+.selectRole select { width: 100%; height: 49px; padding: 0 14px; border: 1px solid #d0d5dd; border-radius: 11px; background: white; color: #344054; }
+.divider { display: flex; align-items: center; gap: 12px; margin: 27px 0 18px; color: #98a2b3; font-size: 10px; }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.selectRoleButton { display: flex; flex-direction: column; gap: 12px; }
+.selectRoleButton button { width: 100%; display: grid; grid-template-columns: 45px 1fr auto; align-items: center; gap: 13px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: white; color: var(--ink); text-align: left; transition: transform .18s, border-color .18s, box-shadow .18s; }
+.selectRoleButton button:hover { transform: translateY(-2px); box-shadow: 0 10px 23px rgba(31,42,68,.08); }
+.selectRoleButton button > span:nth-child(2) { display: flex; flex-direction: column; gap: 3px; }
+.selectRoleButton b { font-size: 14px; }
+.selectRoleButton small { color: var(--muted); font-size: 11px; }
+.selectRoleButton i { color: #98a2b3; font-style: normal; }
+.roleIcon { display: grid; place-items: center; height: 45px; border-radius: 12px; font-size: 22px; font-weight: 800; }
+.selectKibouButton:hover { border-color: #8bb0ff !important; }
+.selectKibouButton .roleIcon { color: var(--primary); background: #edf3ff; }
+.selectJotoButton:hover { border-color: #78d9b8 !important; }
+.selectJotoButton .roleIcon { color: var(--mint); background: #e9fbf4; }
+@media (max-width: 560px) { .selectRole { margin: 24px auto; padding: 27px 20px; } .selectRole h1 { font-size: 24px; } }

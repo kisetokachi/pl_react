@@ -102,28 +102,34 @@ export default function SeatMatchingApp() {
 
   if (role === 'NONE') {
     return (
+      <main className={styles.selectionPage}>
+      <Header />
       <div className={styles.selectRole}>
-        <h2>座席マッチングシステム</h2>
-        <label>場所を選んでください: </label>
-        <select name="location" id="location" onChange={(e) => setLocation(e.target.value)}>
-          <option value="">--- 場所 ---</option>
+        <div className={styles.step}>STEP 1 / 2</div>
+        <h1>どこで利用しますか？</h1>
+        <p>座席を探す場所を選んでください</p>
+        <label htmlFor="location">利用する場所</label>
+        <select name="location" id="location" value={location || ''} onChange={(e) => setLocation(e.target.value || null)}>
+          <option value="">場所を選択してください</option>
           <option value="学食">学食</option>
           <option value="フードコート">フードコート</option>
         </select>
+        <div className={styles.divider}><span>つぎに目的を選択</span></div>
         <div className={styles.selectRoleButton}>
           <button onClick={() => handleClick('KIBOU')} className={styles.selectKibouButton}>
-            座席を探す
+            <span className={styles.roleIcon}>⌕</span><span><b>座席を探す</b><small>空いている席を見つけたい</small></span><i>→</i>
           </button>
           <button onClick={() => handleClick('JOTO')} className={styles.selectJotoButton}>
-            座席を譲る
+            <span className={styles.roleIcon}>↗</span><span><b>座席を譲る</b><small>今いる席を誰かに譲りたい</small></span><i>→</i>
           </button>
         </div>
       </div>
+      </main>
     );
   }
 
   return (
-    <div className={styles.main}>
+    <main className={styles.main}>
       <Header />
       {role === 'KIBOU' && (
         <SeatRequest location={location} status={status} matchedInfo={matchedInfo} seats={seats} setStatus={setStatus} />
@@ -131,6 +137,6 @@ export default function SeatMatchingApp() {
       {role === 'JOTO' && (
         <SeatTransfer location={location} status={status} seats={seats} setStatus={setStatus} />
       )}
-    </div>
+    </main>
   );
 }

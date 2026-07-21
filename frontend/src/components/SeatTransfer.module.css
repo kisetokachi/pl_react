@@ -1,101 +1,20 @@
-.container {
-	text-align: center;
-	padding: 10px;
-}
-
-.container p {
-	margin-bottom: 10px;
-}
-
-.line-title {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin-top: 20px;
-  margin-bottom: 30px;
-}
-
-.line-title::before,
-.line-title::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background-color: #333;
-}
-
-.line-title::before {
-  margin-right: 16px;
-}
-
-.line-title::after {
-  margin-left: 16px;
-}
-
-.seatInfo {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	background-color: whitesmoke;
-	border-radius: 20px;
-	border: 2px solid #333;
-	margin-bottom: 20px;
-}
-
-.seatInfo h2 {
-	margin-top: 10px;
-}
-
-.seatInfo hr {
-	width: 20cm;
-}
-
-.seatInfo img {
-	width: 700px;
-	margin-bottom: 10px;
-	border-radius: 20px;
-}
-
-.seats {
-	display: grid;
-	grid-template-columns: repeat(6, 1fr);
-	gap: 7px;
-	justify-items: center;
-}
-
-.seats button {
-	width: 160px;
-	height: 50px;
-	background-color: #fff;
-	color: black;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-}
-
-.seats button.selected {
-	background-color: #10b981;
-	color: white;
-}
-
-.idle {
-	margin-top: 10px;
-	text-align: center;
-}
-
-.idle button {
-	padding: 15px 30px;
-	background-color: #d1d5db;
-	color: white;
-	border: none;
-	border-radius: 10px;
-	width: 100%
-}
-
-.idle button.selected {
-	background-color: #10b981;
-}
-
-.matched {
-	padding: 20px;
-	background-color: #dbeafe;
-	border-radius: 10px;
-}
+.container { width: min(100% - 36px, 980px); margin: auto; padding: 44px 0 65px; }
+.pageTitle { margin-bottom: 24px; text-align: center; }
+.pageTitle > span { color: var(--mint); font-size: 11px; font-weight: 800; }
+.pageTitle h1 { margin: 5px 0 6px; font-size: 27px; letter-spacing: -.04em; }
+.pageTitle p { margin: 0; color: var(--muted); font-size: 12px; }
+.seatInfo { overflow: hidden; margin-bottom: 24px; border: 1px solid var(--line); border-radius: 18px; background: white; box-shadow: 0 10px 30px rgba(31,42,68,.06); }
+.cardTitle { min-height: 57px; padding: 0 19px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+.cardTitle h2 { margin: 0; font-size: 14px; }
+.cardTitle span { color: var(--muted); font-size: 10px; }
+.seatInfo img { display: block; width: 100%; max-height: 400px; object-fit: contain; padding: 14px; background: #fafbfc; }
+.instruction { margin: 0 0 12px; font-size: 13px; font-weight: 700; }
+.seats { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: white; }
+.seats button { min-width: 0; aspect-ratio: 1.4; border: 1px solid #d8dee9; border-radius: 9px; background: #fff; color: #475467; font-weight: 700; transition: .15s; }
+.seats button:hover { border-color: var(--mint); background: #edfbf6; }
+.seats button.selected { border-color: var(--mint); background: var(--mint); color: white; box-shadow: 0 5px 12px rgba(16,185,129,.22); }
+.idle { margin-top: 16px; }
+.idle button { width: 100%; min-height: 50px; border: 0; border-radius: 11px; background: #e4e7ec; color: #98a2b3; font-weight: 700; }
+.idle button.selected { background: var(--mint); color: white; box-shadow: 0 8px 18px rgba(16,185,129,.2); }
+@media (max-width: 700px) { .seats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; padding: 12px; } }
+@media (max-width: 560px) { .container { width: min(100% - 24px, 980px); padding: 30px 0 45px; } .pageTitle h1 { font-size: 23px; } .seatInfo img { padding: 7px; } }

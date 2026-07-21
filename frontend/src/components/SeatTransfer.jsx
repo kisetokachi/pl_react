@@ -34,10 +34,9 @@ export function SeatTransfer({location, status, seats, setStatus}) {
 		<>
 			{status === 'IDLE' && (
 				<div className={styles.container}>
-					<h2 className={styles['line-title']}>座席を譲る</h2>
+					<div className={styles.pageTitle}><span>座席を譲る</span><h1>現在の席を選択</h1><p>{location}で今座っている席を指定してください</p></div>
 					<div className={styles.seatInfo}>
-						<h2>{location}の座席情報</h2>
-						<hr />
+						<div className={styles.cardTitle}><h2>{location} 座席マップ</h2><span>座席番号を確認</span></div>
 						{location === "学食" && (
 							<img src={SchoolSeatLocation} alt="学食の座席図" />
 						)}
@@ -45,7 +44,7 @@ export function SeatTransfer({location, status, seats, setStatus}) {
 							<img src={FoodcourtSeatLocation} alt="フードコートの座席図" />
 						)}
 					</div> 
-					<p>座席を指定してください:</p>
+					<p className={styles.instruction}>譲る座席を選択してください</p>
 
 					<div className={styles.seats}>
 						{seats.map(seat => (

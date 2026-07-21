@@ -29,7 +29,7 @@ function App() {
         {/* <Route path="/sended_KIBOU" element={<RequestSended />} /> */}
 
         {/* 存在しないURLにアクセスされた場合の404ページ */}
-        <Route path="*" element={<h2>404 Not Found: ページが見つかりません</h2>} />
+        <Route path="*" element={<main style={{minHeight:'100vh', display:'grid', placeItems:'center', textAlign:'center', padding:24}}><div><h1>404</h1><p>ページが見つかりません</p></div></main>} />
       </Routes>
     </BrowserRouter>
   )

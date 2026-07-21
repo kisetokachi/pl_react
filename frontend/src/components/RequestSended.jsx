@@ -1,14 +1,15 @@
-import Header from "./Header"
+import styles from "./RequestSended.module.css"
 
 export default function RequestSended({matchedInfo}) {
 	return (
-		<div>
-			<h2>希望の座席はマッチングされました</h2>
-			<div>
-				<p>場所：　{matchedInfo.matchDetails.location}</p>
-				<p>座席番号：　{matchedInfo.matchDetails.setNumber}番</p>
+		<div className={styles.result}>
+			<span className={styles.check}>✓</span>
+			<h1>マッチングしました！</h1>
+			<p>以下の座席へ移動してください</p>
+			<div className={styles.ticket}>
+				<span>{matchedInfo.location}</span>
+				<strong>{matchedInfo.seatNumber ?? matchedInfo.setNumber}<small>番</small></strong>
 			</div>
-			<h2>座席に移動してください</h2>
 		</div>
 	);
 }

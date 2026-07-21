@@ -1,99 +1,10 @@
-.container {
-    width: 400px;
-    margin: 60px auto;
-    padding: 30px;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    text-align: center;
-}
-
-.container h1 {
-    margin-bottom: 30px;
-    color: #333;
-}
-
-.form {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-}
-
-.inputGroup {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.inputGroup label {
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
-}
-
-.inputGroup input {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    box-sizing: border-box;
-}
-
-.inputGroup input:focus {
-    outline: none;
-    border-color: #4CAF50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.4);
-}
-
-.signupButton {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    background-color: #4CAF50;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.signupButton:hover {
-    background-color: #43A047;
-}
-
-.loginButton {
-    width: 100%;
-    padding: 10px;
-    margin-top: 15px;
-    background-color: #2196F3;
-    color: white;
-    font-size: 15px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.loginButton:hover {
-    background-color: #1976D2;
-}
-
-.backButton {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background-color: #757575;
-    color: white;
-    font-size: 15px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.backButton:hover {
-    background-color: #616161;
-}
+.page { composes: page from './Login.module.css'; padding-block: 24px; }
+.container { composes: container from './Login.module.css'; width: min(100%, 460px); }
+.brand { composes: brand from './Login.module.css'; }
+.heading { composes: heading from './Login.module.css'; margin-bottom: 20px; }
+.form { composes: form from './Login.module.css'; gap: 14px; }
+.inputGroup { composes: inputGroup from './Login.module.css'; }
+.signupButton { width: 100%; min-height: 49px; margin-top: 5px; border: 0; border-radius: 11px; background: var(--primary); color: white; font-weight: 700; box-shadow: 0 9px 18px rgba(37,99,235,.2); }
+.signupButton:hover { background: var(--primary-dark); }
+.loginText { margin: 21px 0 0; color: var(--muted); text-align: center; font-size: 13px; }
+.loginText button { padding: 3px; border: 0; background: none; color: var(--primary); font-weight: 700; }

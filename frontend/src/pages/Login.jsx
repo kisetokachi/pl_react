@@ -36,13 +36,16 @@ export default function Login() {
     };
 
     return (
+        <main className={styles.page}>
         <div className={styles.container}>
-            <h1>ログイン</h1>
+            <button className={styles.brand} onClick={() => navigate('/')} aria-label="トップへ戻る"><span>S</span>SeatLink</button>
+            <div className={styles.heading}><span>おかえりなさい</span><h1>ログイン</h1><p>アカウント情報を入力してください</p></div>
 
             <form onSubmit={handleLogin} className={styles.form}>
                 <div className={styles.inputGroup}>
-                    <label>メールアドレス</label>
+                    <label htmlFor="email">メールアドレス</label>
                     <input
+                        id="email"
                         type="email"
                         value={email}
                         placeholder="example@example.com"
@@ -52,8 +55,9 @@ export default function Login() {
                 </div>
 
                 <div className={styles.inputGroup}>
-                    <label>パスワード</label>
+                    <label htmlFor="password">パスワード</label>
                     <input
+                        id="password"
                         type="password"
                         value={password}
                         placeholder="パスワード"
@@ -67,23 +71,8 @@ export default function Login() {
                 </button>
             </form>
 
-            <p className={styles.registerText}>
-                アカウントをお持ちでない方
-            </p>
-
-            <button
-                className={styles.registerButton}
-                onClick={() => navigate("/signup")}
-            >
-                新規登録
-            </button>
-
-            <button
-                className={styles.backButton}
-                onClick={() => navigate("/")}
-            >
-                トップへ戻る
-            </button>
+            <p className={styles.registerText}>アカウントをお持ちでない方 <button onClick={() => navigate("/signup")}>新規登録</button></p>
         </div>
+        </main>
     );
 }
