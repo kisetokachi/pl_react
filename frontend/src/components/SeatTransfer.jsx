@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import SchoolSeatLocation from "../assets/SchoolSeatLocation.jpg";
 import FoodcourtSeatLocation from "../assets/FoodcourtSeatLocation.jpg";
 import TransferSubmitted from "./TransferSubmitted";
@@ -7,8 +6,7 @@ import styles from "./SeatTransfer.module.css";
 
 export function SeatTransfer({location, status, seats, setStatus}) {
 	const [selectedSeat, setSelectedSeat] = useState(0);
-
-	const API_BASE_URL = 'http://localhost:8080/api/match'; // Spring BootサーバーのURL
+	const API_BASE_URL = 'http://localhost:8080/api/match';
 
 	// 座席を譲るリクエストを送信
 	const offerSeat = async () => {
@@ -18,18 +16,19 @@ export function SeatTransfer({location, status, seats, setStatus}) {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
-					userId: 'user-otsu-456', // 実際の環境では認証情報などを使用
+					userId: 'user-otsu-456',
 					location: location,
 					seatNumber: selectedSeat
 				})
 			});
 			if (!response.ok) throw new Error('リクエストに失敗しました');
-			setStatus('MATCHED');
+			
+			// ★送信成功で即座に TransferSubmitted 画面へ切り替える（元の挙動）
+			setStatus('MATCHED'); 
 		} catch (error) {
 			console.error(error);
 			alert('譲渡する座席の情報を送信できませんでした');
 			setStatus('IDLE');
-			setStatus('MATCHED');
 		}
 	};
 
@@ -42,46 +41,43 @@ export function SeatTransfer({location, status, seats, setStatus}) {
 						<h2>{location}の座席情報</h2>
 						<hr />
 						{location === "学食" && (
-							<img src={SchoolSeatLocation}></img>
+							<img src={SchoolSeatLocation} alt="学食の座席図" />
 						)}
 						{location === "フードコート" && (
 							<img src={FoodcourtSeatLocation} alt="フードコートの座席図" />
 						)}
 					</div> 
-					{status === 'IDLE' && <p>座席を指定してください:</p>}
-					{status === 'WAITING' && <p>譲渡可能な座席を送信しています...</p>}
-					{/* ここで座席を決めている */}
+					<p>座席を指定してください:</p>
+
 					<div className={styles.seats}>
 						{seats.map(seat => (
-						<button
-							key={seat}
-							disabled={status !== 'IDLE'}
-							onClick={() => {setSelectedSeat(seat)}}
-							className={selectedSeat === seat ? styles.selected : ''}
-						>
-							{seat}
-						</button>
+							<button
+								key={seat}
+								disabled={status !== 'IDLE'}
+								onClick={() => setSelectedSeat(seat)}
+								className={selectedSeat === seat ? styles.selected : ''}
+							>
+								{seat}
+							</button>
 						))}
 					</div>
 
 					<div className={styles.idle}>
 						<button 
-							onClick={() => {
-								offerSeat()
-							}}
+							onClick={offerSeat}
 							disabled={!selectedSeat}
-							className={selectedSeat ? styles.selected : ''}>
-							{status === 'IDLE' && 'この席を譲る準備をする'}
-							{status === 'WAITING' && `${selectedSeat}番の席を送信完了`}
+							className={selectedSeat ? styles.selected : ''}
+						>
+							この席を譲る準備をする
 						</button>
 					</div>
 				</div>
 			)}
 
-			{/* マッチングが成立したときの表示 */}
-			{status === 'MATCHED' && (
+			{/* 送信完了・待機画面への切り替え */}
+			{(status === 'WAITING' || status === 'MATCHED') && (
 				<TransferSubmitted />
 			)}
 		</>
-	)
+	);
 }
