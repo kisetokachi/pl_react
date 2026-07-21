@@ -36,24 +36,46 @@ export default function SeatMatchingApp() {
 			method: 'GET',
 			headers: { 'Content-Type': 'application/json' }
 		});
-		const data = await response.json();
-		setSeats(data.seats);
+		if (response.ok)
+		{
+			const data = await response.json();
+			setSeats(data.seats);
+		}
 	}catch (error) {
 		console.error('座席情報を取得できませんでした', error);
 	}
   }
 
-  // 場所の情報を取得する
-  const getLocation = async () => {
+  // 場所の情報を送信する
+  const sendLocation = async () => {
 	try {
 		const response = await fetch(`${API_BASE_URL}`, {
-			method: 'GET',
-			header: {'Content-Type': 'application/json'}
+			method: 'POST',
+			header: {'Content-Type': 'application/json'},
+			body: JSON.stringify({
+				location: location
+			})
 		});
-		const data = await response.json();
-		setLocation(data.location);
+		if (response.ok) throw new Error('リクエストに失敗しました');
 	}catch (error) {
-		console.error('場所情報を取得できませんでした', error);
+		console.error('場所情報を送信できませんでした', error);
+	}
+  }
+
+  // 属性選択ボタンが押されたときの処理
+  const handleClick = (role) => {
+	if (location == null)
+	{
+		setRole('NONE')
+		alert("場所を選択してください")
+	}
+	else
+	{
+		setRole(role)
+		// 場所情報の送信
+		sendLocation()
+		// 座席情報の取得
+		getSeats()
 	}
   }
 
@@ -85,18 +107,6 @@ export default function SeatMatchingApp() {
   }, [status, role]);
 
 
-  // 初回レンダリング時のみフェッチする
-//   useEffect(() => {
-
-// 	// 座席情報の取得
-// 	getSeats();
-
-// 	// 場所情報の取得
-// 	getLocation();
-
-//   }, []);
-
-
 
   // --- UI描画部分 ---
 
@@ -107,7 +117,7 @@ export default function SeatMatchingApp() {
 		<h2>座席マッチングシステム</h2>
 		<label>場所を選んでください: </label>
 			<select name="location"
-					id="Location"
+					id="location"
 					onChange={(e) => setLocation(e.target.value)}>
 			  <option value="" value>--- 場所 ---</option>
 			  <option value="学食">学食</option>
@@ -116,24 +126,14 @@ export default function SeatMatchingApp() {
 		<div className={styles.selectRoleButton}>
 		  <button 
 			onClick={() => {
-			  if (location == null)
-			  {
-				setRole('NONE')
-				alert("場所を選択してください")
-			  }
-			  else setRole('KIBOU')
+				handleClick('KIBOU')
 			}}
 			className={styles.selectKibouButton}>
 			座席を探す
 		  </button>
 		  <button 
 			onClick={() => {
-			  if (location == null)
-			  {
-				setRole('NONE')
-				alert("場所を選択してください")
-			  }
-			  else setRole('JOTO')
+				handleClick('JOTO')
 			}}
 			className={styles.selectJotoButton}>
 			座席を譲る

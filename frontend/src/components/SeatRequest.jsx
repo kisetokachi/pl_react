@@ -21,8 +21,6 @@ export function SeatRequest({location, status, matchedInfo, seats, setStatus}) {
 			setPossibleSeats(data.possibleSeats);
 		} catch (error) {
 			console.error("空席情報の取得に失敗しました:", error);
-			// 3秒ごとのタイマー中に毎回ポップアップが出ると画面がフリーズするため、
-			// アラートは出さずにブラウザのコンソールログのみに出力させています
 		}
 	}
 
