@@ -1,15 +1,11 @@
 package com.example.demo.dto;
 
-public class SeatOfferRequest {
+public class SeatRequestDto {
     private String userId;
-    private String location;
     private Integer seatNumber;
 
     public String getUserId() { return userId; }
     public void setUserId(String userId) { this.userId = userId; }
-
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
 
     public Integer getSeatNumber() { return seatNumber; }
     public void setSeatNumber(Integer seatNumber) { this.seatNumber = seatNumber; }
