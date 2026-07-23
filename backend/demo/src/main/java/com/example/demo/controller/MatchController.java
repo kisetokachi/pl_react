@@ -31,7 +31,10 @@ public class MatchController {
     @GetMapping
     public ResponseEntity<SeatsResponse> getAllSeats() {
         List<Integer> allSeats = new ArrayList<>();
-        for (int i = 1; i <= 32; i++) {
+        int seatnum = 0;
+        if (currentLocation.equals("学食")) seatnum = 32;
+        else if (currentLocation.equals("フードコート")) seatnum = 30;
+        for (int i = 1; i <= seatnum; i++) {
             allSeats.add(i);
         }
         return ResponseEntity.ok(new SeatsResponse(allSeats));
@@ -70,15 +73,12 @@ public class MatchController {
             SeatOfferRequest offer = activeOffers.remove(seatNum);
 
             // ★ RequestSended.jsx (matchedInfo.matchDetails.location / setNumber) に完全に合わせるための構造を作る
-            Map<String, Object> innerDetails = new HashMap<>();
-            innerDetails.put("location", offer.getLocation() != null ? offer.getLocation() : currentLocation);
-            innerDetails.put("setNumber", offer.getSeatNumber()); // setNumberキー名対応
+            Map<String, Object> matchDetails = new HashMap<>();
+            matchDetails.put("location", offer.getLocation() != null ? offer.getLocation() : currentLocation);
+            matchDetails.put("seatNumber", offer.getSeatNumber()); // seatNumberキー名対応
 
-            Map<String, Object> outerDetails = new HashMap<>();
-            outerDetails.put("matchDetails", innerDetails); // matchDetailsプロパティをネストさせる
-
-            matchResults.put("JOTO", outerDetails);
-            matchResults.put("KIBOU", outerDetails);
+            matchResults.put("JOTO", matchDetails);
+            matchResults.put("KIBOU", matchDetails);
         }
 
         Map<String, String> response = new HashMap<>();
@@ -90,6 +90,7 @@ public class MatchController {
     public ResponseEntity<StatusCheckResponse> checkStatus(@RequestParam("role") String role) {
         if (matchResults.containsKey(role)) {
             Map<String, Object> details = matchResults.remove(role);
+            System.out.println(role + ": " + details.toString());
             return ResponseEntity.ok(new StatusCheckResponse(true, details));
         }
 

@@ -11,7 +11,7 @@ public class StatusCheckResponse {
         this.matchDetails = matchDetails;
     }
 
-    public boolean isIsMatched() { return isMatched; }
+    public boolean getIsMatched() { return isMatched; }
     public void setIsMatched(boolean isMatched) { this.isMatched = isMatched; }
 
     public Map<String, Object> getMatchDetails() { return matchDetails; }
