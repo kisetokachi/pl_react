@@ -6,3 +6,4 @@
 .ticket span { color: #475467; font-weight: 600; }
 .ticket strong { color: var(--primary); font-size: 33px; }
 .ticket small { margin-left: 3px; font-size: 13px; }
+.seatMap {display: block;width: 100%;max-height: 400px;object-fit: contain;margin-top: 20px;border: 1px solid var(--line);border-radius: 14px;background: #fafbfc;padding: 12px;}

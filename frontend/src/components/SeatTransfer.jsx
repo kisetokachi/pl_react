@@ -8,8 +8,6 @@ import styles from "./SeatTransfer.module.css";
 export function SeatTransfer({location, status, seats, matchedInfo, setStatus}) {
 	const [selectedSeat, setSelectedSeat] = useState(0);
 	const API_BASE_URL = 'http://localhost:8080/api/match';
-
-	// 座席を譲るリクエストを送信
 	const offerSeat = async () => {
 		setStatus('WAITING');
 		try {
