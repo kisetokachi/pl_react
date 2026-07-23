@@ -90,7 +90,6 @@ public class MatchController {
     public ResponseEntity<StatusCheckResponse> checkStatus(@RequestParam("role") String role) {
         if (matchResults.containsKey(role)) {
             Map<String, Object> details = matchResults.remove(role);
-            System.out.println(role + ": " + details.toString());
             return ResponseEntity.ok(new StatusCheckResponse(true, details));
         }
 

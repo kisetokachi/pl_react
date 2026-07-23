@@ -44,14 +44,14 @@ export default function SeatMatchingApp() {
   };
 
   // 属性選択ボタンが押されたときの処理
-  const handleClick = (role) => {
+  const handleClick = async (role) => {
     if (location == null) {
       setRole('NONE');
       alert("場所を選択してください");
     } else {
       setRole(role);
-      sendLocation();
-      getSeats();
+      await sendLocation();
+      await getSeats();
     }
   };
 
