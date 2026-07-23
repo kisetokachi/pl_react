@@ -1,0 +1,8 @@
+.result { width: min(100% - 32px, 500px); margin: 70px auto; padding: 42px 30px; border: 1px solid var(--line); border-radius: 20px; background: white; box-shadow: var(--shadow); text-align: center; }
+.check { display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto 20px; border-radius: 50%; background: var(--primary); color: white; font-size: 28px; font-weight: 800; box-shadow: 0 9px 20px rgba(37,99,235,.22); }
+.result h1 { margin: 0 0 8px; font-size: 25px; }
+.result > p { color: var(--muted); font-size: 13px; }
+.ticket { margin-top: 25px; padding: 19px; display: flex; align-items: center; justify-content: space-between; border: 1px dashed #9bb7f3; border-radius: 14px; background: #f2f6ff; }
+.ticket span { color: #475467; font-weight: 600; }
+.ticket strong { color: var(--primary); font-size: 33px; }
+.ticket small { margin-left: 3px; font-size: 13px; }

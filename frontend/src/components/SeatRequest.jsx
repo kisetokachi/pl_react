@@ -3,13 +3,14 @@ import FoodcourtSeatLocation from "../assets/FoodcourtSeatLocation.jpg";
 import styles from "./SeatRequest.module.css";
 import { useState, useEffect } from "react";
 import SeatRequestButton from "./SeatRequestButton";
-import RequestSended from "./RequestSended";
+import RequestMatched from "./RequestMatched";
+import RequestWaiting from "./RequestWaiting";
 
 export function SeatRequest({location, status, matchedInfo, seats, setStatus}) {
 	const API_BASE_URL = 'http://localhost:8080/api/match'; // Spring BootサーバーのURL
 
 	// 初期表示は空の配列にしておき、Javaから取得した本物のデータが入るようにします
-	const [possibleSeats, setPossibleSeats] = useState([1, 2, 3]);
+	const [possibleSeats, setPossibleSeats] = useState([]);
 
 	const getPossibleSeats = async () => {
 		try {
@@ -58,9 +59,13 @@ export function SeatRequest({location, status, matchedInfo, seats, setStatus}) {
 				</div>
 			)}
 
+			{status === 'WAITING' && (
+				<RequestWaiting />
+			)}
+
 			{/* マッチングが成立したときの表示 */}
 			{status === 'MATCHED' && matchedInfo && (
-				<RequestSended matchedInfo={matchedInfo} />
+				<RequestMatched matchedInfo={matchedInfo} />
 			)}
 		</>
 	)

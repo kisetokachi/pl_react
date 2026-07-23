@@ -11,7 +11,7 @@ export default function SeatMatchingApp() {
   const [status, setStatus] = useState('IDLE'); // 'IDLE', 'WAITING', 'MATCHED', 'SUBMITTED'
   const [location, setLocation] = useState(null); // 場所の情報
   const [matchedInfo, setMatchedInfo] = useState(null); // マッチング後のデータ
-  const [seats, setSeats] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]);
+  const [seats, setSeats] = useState([]);
 
   // 場所ごとの座席情報を取得する
   const getSeats = async () => {
@@ -66,12 +66,13 @@ export default function SeatMatchingApp() {
 		  // 自身の状態をサーバーに確認するエンドポイント
 		  const response = await fetch(`${API_BASE_URL}/status?role=${role}`);
 		  if (response.ok) {
-			const data = await response.json();
-			if (data.isMatched) {
-			  setStatus('MATCHED');
-			  setMatchedInfo(data.matchDetails); // { location: '学食', seatNumber: 5 } など
-			}
-			else setStatus('IDLE'); // マッチングが成立していない場合はもう一回選び直す
+        const data = await response.json();
+        if (data.isMatched) {
+          setStatus('MATCHED');
+          setMatchedInfo(data.matchDetails); // { location: '学食', seatNumber: 5 } など
+          clearInterval(intervalId);
+        }
+        else setStatus('IDLE'); // マッチングが成立していない場合はもう一回選び直す
 		  }
 		} catch (error) {
 		  console.error('ステータス確認エラー', error);
@@ -85,11 +86,12 @@ export default function SeatMatchingApp() {
 		  // 自身の状態をサーバーに確認するエンドポイント
 		  const response = await fetch(`${API_BASE_URL}/status?role=${role}`);
 		  if (response.ok) {
-			const data = await response.json();
-			if (data.isMatched) {
-			  setStatus('MATCHED');
-			  setMatchedInfo(data.matchDetails); // { location: '学食', seatNumber: 5 } など
-			}
+        const data = await response.json();
+        if (data.isMatched) {
+          setStatus('MATCHED');
+          setMatchedInfo(data.matchDetails); // { location: '学食', seatNumber: 5 } など
+          clearInterval(intervalId);
+        }
 		  }
 		} catch (error) {
 		  console.error('ステータス確認エラー', error);
@@ -97,8 +99,9 @@ export default function SeatMatchingApp() {
 	  }, 3000); // 3秒ごとに確認
 	}
 
-	return () => clearInterval(intervalId);
+	// return () => clearInterval(intervalId);
   }, [status, role]);
+
 
   if (role === 'NONE') {
     return (
@@ -135,7 +138,7 @@ export default function SeatMatchingApp() {
         <SeatRequest location={location} status={status} matchedInfo={matchedInfo} seats={seats} setStatus={setStatus} />
       )}
       {role === 'JOTO' && (
-        <SeatTransfer location={location} status={status} seats={seats} setStatus={setStatus} />
+        <SeatTransfer location={location} status={status} seats={seats} matchedInfo={matchedInfo} setStatus={setStatus} />
       )}
     </main>
   );

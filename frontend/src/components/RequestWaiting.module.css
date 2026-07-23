@@ -1,0 +1,5 @@
+.strings { width: min(100% - 32px, 520px); margin: 70px auto; padding: 45px 28px; border: 1px solid var(--line); border-radius: 20px; background: white; box-shadow: var(--shadow); text-align: center; }
+.strings::before { content: '✓'; display: grid; place-items: center; width: 62px; height: 62px; margin: 0 auto 20px; border-radius: 50%; background: #e9fbf4; color: var(--mint); font-size: 27px; font-weight: 800; }
+.strings h2 { margin: 0 0 12px; font-size: 22px; }
+.strings hr { width: 50px; height: 3px; margin: 18px auto; border: 0; border-radius: 3px; background: var(--mint); }
+.strings p { color: var(--muted); font-size: 13px; }

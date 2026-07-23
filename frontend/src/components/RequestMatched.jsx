@@ -1,6 +1,6 @@
-import styles from "./RequestSended.module.css"
+import styles from "./RequestMatched.module.css"
 
-export default function RequestSended({matchedInfo}) {
+export default function RequestMatched({matchedInfo}) {
 	return (
 		<div className={styles.result}>
 			<span className={styles.check}>✓</span>
@@ -8,7 +8,7 @@ export default function RequestSended({matchedInfo}) {
 			<p>以下の座席へ移動してください</p>
 			<div className={styles.ticket}>
 				<span>{matchedInfo.location}</span>
-				<strong>{matchedInfo.seatNumber ?? matchedInfo.setNumber}<small>番</small></strong>
+				<strong>{matchedInfo.seatNumber}<small>番</small></strong>
 			</div>
 		</div>
 	);

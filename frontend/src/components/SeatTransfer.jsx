@@ -2,9 +2,10 @@ import { useState } from "react";
 import SchoolSeatLocation from "../assets/SchoolSeatLocation.jpg";
 import FoodcourtSeatLocation from "../assets/FoodcourtSeatLocation.jpg";
 import TransferSubmitted from "./TransferSubmitted";
+import TransferMatched from "./TransferMatched";
 import styles from "./SeatTransfer.module.css";
 
-export function SeatTransfer({location, status, seats, setStatus}) {
+export function SeatTransfer({location, status, seats, matchedInfo, setStatus}) {
 	const [selectedSeat, setSelectedSeat] = useState(0);
 	const API_BASE_URL = 'http://localhost:8080/api/match';
 
@@ -77,8 +78,8 @@ export function SeatTransfer({location, status, seats, setStatus}) {
 			)}
 
 			{/* マッチング成立したときの表示 */}
-			{status === 'MATCHED' && (
-				<h2>マッチングが成立しました</h2>
+			{status === 'MATCHED' && matchedInfo && (
+				<TransferMatched matchedInfo={matchedInfo}/>
 			)}
 		</>
 	);
