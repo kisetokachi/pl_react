@@ -2,7 +2,7 @@ import { useState } from "react";
 import clsx from 'clsx';
 import styles from "./SeatRequestButton.module.css";
 
-export default function SeatRequestButton({status, seats, possibleSeats, setStatus}) {
+export default function SeatRequestButton({location, status, seats, possibleSeats, setStatus}) {
 	const API_BASE_URL = 'http://localhost:8080/api/match'; // Spring BootサーバーのURL
 
 	const [selectedSeat, setSelectedSeat] = useState(0);
@@ -16,7 +16,8 @@ export default function SeatRequestButton({status, seats, possibleSeats, setStat
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
 					userId: 'user-kou-123', // 実際の環境では認証情報などを使用
-					seatNumber: seat
+					seatNumber: seat,		// 選択した座席
+					location: location		// 場所
 				})
 			});
 			if (!response.ok) throw new Error('リクエストに失敗しました');

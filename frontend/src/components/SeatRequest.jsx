@@ -14,7 +14,7 @@ export function SeatRequest({location, status, matchedInfo, seats, setStatus}) {
 
 	const getPossibleSeats = async () => {
 		try {
-			const response = await fetch(`${API_BASE_URL}/request`, {
+			const response = await fetch(`${API_BASE_URL}/request?location=${location}`, {
 				method: 'GET',
 				headers: { 'Content-Type': 'application/json' }
 			});

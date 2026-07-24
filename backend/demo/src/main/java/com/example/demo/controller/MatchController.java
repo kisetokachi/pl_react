@@ -12,7 +12,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @CrossOrigin(origins = "*")
 public class MatchController {
 
-    private final Map<Integer, SeatOfferRequest> activeOffers = new ConcurrentHashMap<>();
+    private final Map<Integer, SeatOfferRequest> StuCafe_activeOffers = new ConcurrentHashMap<>();
+    private final Map<Integer, SeatOfferRequest> FoodCourt_activeOffers = new ConcurrentHashMap<>();
     private final Map<String, Map<String, Object>> matchResults = new ConcurrentHashMap<>();
     private String currentLocation = "学食";
 
@@ -47,7 +48,9 @@ public class MatchController {
         matchResults.remove("JOTO");
 
         if (request.getSeatNumber() != null) {
-            activeOffers.put(request.getSeatNumber(), request);
+            if ("学食".equals(request.getLocation())) StuCafe_activeOffers.put(request.getSeatNumber(), request);
+            else if ("フードコート".equals(request.getLocation())) FoodCourt_activeOffers.put(request.getSeatNumber(), request);
+            // activeOffers.put(request.getSeatNumber(), request);
         }
 
         Map<String, String> response = new HashMap<>();
@@ -56,8 +59,10 @@ public class MatchController {
     }
 
     @GetMapping("/request")
-    public ResponseEntity<PossibleSeatsResponse> getPossibleSeats() {
-        List<Integer> possibleSeats = new ArrayList<>(activeOffers.keySet());
+    public ResponseEntity<PossibleSeatsResponse> getPossibleSeats(@RequestParam String location) {
+        List<Integer> possibleSeats = null;
+        if ("学食".equals(location)) possibleSeats = new ArrayList<>(StuCafe_activeOffers.keySet());
+        else if ("フードコート".equals(location)) possibleSeats = new ArrayList<>(FoodCourt_activeOffers.keySet());
         return ResponseEntity.ok(new PossibleSeatsResponse(possibleSeats));
     }
 
@@ -69,16 +74,18 @@ public class MatchController {
 
         Integer seatNum = request.getSeatNumber();
 
-        if (seatNum != null && activeOffers.containsKey(seatNum)) {
-            SeatOfferRequest offer = activeOffers.remove(seatNum);
+        if (seatNum != null) {
+            SeatOfferRequest offer = null;
 
-            // ★ RequestSended.jsx (matchedInfo.matchDetails.location / setNumber) に完全に合わせるための構造を作る
+            if ("学食".equals(request.getLocation()) && StuCafe_activeOffers.containsKey(seatNum)) offer = StuCafe_activeOffers.remove(seatNum);
+            else if ("フードコート".equals(request.getLocation()) && FoodCourt_activeOffers.containsKey(seatNum)) offer = FoodCourt_activeOffers.remove(seatNum); 
+        
             Map<String, Object> matchDetails = new HashMap<>();
             matchDetails.put("location", offer.getLocation() != null ? offer.getLocation() : currentLocation);
             matchDetails.put("seatNumber", offer.getSeatNumber()); // seatNumberキー名対応
 
             matchResults.put("JOTO", matchDetails);
-            matchResults.put("KIBOU", matchDetails);
+            matchResults.put("KIBOU", matchDetails);    
         }
 
         Map<String, String> response = new HashMap<>();
